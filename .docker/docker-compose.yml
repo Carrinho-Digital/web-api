@@ -1,9 +1,11 @@
 version: "3"
 
 services:
-  mongo-products:
+  mongodb:
     image: mongo
     restart: always
+    networks:
+      - dnet
     ports:
       - "27017:27017"
     environment:
@@ -14,11 +16,18 @@ services:
     build: ../
     ports:
       - "8001:8001"
+    networks:
+      - dnet
     environment:
       - PORT=8001
-      - MONGODB_URI=mongodb://root:example@localhost:27017/admin
+      - MONGODB_URI=mongodb://root:example@mongodb:27017/admin
       - SALT=12
-      - SECRET=%$!@#@!!@#78*SEARA
+      - SECRET=secret
       - ISSUER=MercadoOnlinePlataform
       - AUDIENCE=MercadoOnlineAudience
       - EXPIRE_IN_MINUTES=240
+      - NODE_ENV=development
+
+networks:
+  dnet:
+    driver: bridge

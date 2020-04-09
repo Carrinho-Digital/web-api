@@ -5,19 +5,21 @@
 ### Levantando a web-api
 
 1. Instale o docker e o docker-compose na sua máquina
-2.
+2. Verifique a instalação do **docker** e **docker-compose**:
 
-O Carrinho Digital é uma ideia que tem como objetivo ajudar nas suas compras do mês de um modo totalmente moderno, esqueça as filas nos caixas, as lotações nos estacionamentos de mercados e faça tudo isso online!
+- `docker -v`
+- `docker-compose -v`
 
-1. O carrinho digital tem 2 tipos de usuários
+3. Pelo terminal entre na pasta **.docker** e:
 
-- Mercados: quem ficará responsável por receber as notificações de compras, separá-las e envia-lás aos seus clientes.
-- Clientes: quem faz a compra pelo app e irá receber em casa ou ir buscar na porta do mercado.
+- Starte o serviço do mongo: `docker-compose up -d mongodb`
+- Verifique se o serviço do mongo esta rodando: `docker ps`, a saída deve exibir o serviço `docker_mongodb_1`
+- Starte o serviço da webapi: `docker-compose up -d --build webapi`
+- Verifique se o serviço do mongo esta rodando: `docker ps`, a saída deve exibir o serviço `docker_webapi_1`
+- Se tudo estiver correto a aplicação estará em pé e pronta para utilização:
+  - Se voce estiver em um linux/mac a aplicação estará rodando em: **http://localhost:8001**
+  - Se voce estiver em um windows precisará saber o ip da docker-machine: `docker-machine ip` e a aplicação estará rodando na porta **8001** do ip da docker machine.
 
-2. O app só aceitará compras com cartão de crédito, sendo assim compras que forem feitas no dinheiro físico não poderão ser válidadas e nem garantidas pelo app
+### Roteamento
 
-3. Sobre entregas de produtos o Carrinho Digital deixa a responsábilidade de entrega para os mercados parceiros da plataforma e no futuro poderá oferecer tais serviços. Então o app não se responsabiliza pela qualidade das entregas porém permitirá que o cliente, quem recebeu os produtos, avalie a entrega de determinado estabelecimento.
-
-4. Taxas de fretes, o app permitirá uma regionalização com base na cidade do mercado parceiro para que o seja cobrado taxas de acordo com a distância entre as localidades, e além disso terá um modo de frete que será o modo expresso o qual é de responsábilidade do mercado informar suas cobranças.
-
-5. Sobre buscar seus produtos comprados no mercado: o cliente poderá realizar isso com o código da compra que é único para cada compra feita no sistema, assim o mercado deverá buscar pelo código do cliente sua compra e entrega-lá ao mesmo.
+O roteamento da api segue o padrão: **{url}/api/v1/{rota}**
