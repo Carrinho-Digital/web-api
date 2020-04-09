@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  mongo-products:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+
+  webapi:
+    build: ../
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - MONGODB_URI=mongodb://root:example@localhost:27017/admin
+      - SALT=12
+      - SECRET=%$!@#@!!@#78*SEARA
+      - ISSUER=MercadoOnlinePlataform
+      - AUDIENCE=MercadoOnlineAudience
+      - EXPIRE_IN_MINUTES=240
