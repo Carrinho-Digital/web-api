@@ -20,6 +20,10 @@
   - Se voce estiver em um linux/mac a aplicação estará rodando em: **http://localhost:8001**
   - Se voce estiver em um windows precisará saber o ip da docker-machine: `docker-machine ip` e a aplicação estará rodando na porta **8001** do ip da docker machine.
 
+4. Para parar a API voce precisa digitar dentro da pasta **.docker**:
+
+- `docker-compose down`
+
 ### Roteamento
 
 O roteamento da api segue o padrão: **{url}/api/v1/{rota}**
