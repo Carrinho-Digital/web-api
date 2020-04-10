@@ -28,7 +28,7 @@ function buildAddProductsOnMarketCart({
   return async function addProductsOnMarketCart(
     userId, marketId, productsInfo = [],
   ) {
-    let currentUserCartOnMarket = await getCurrentCartByMarket(
+    let { cart: currentUserCartOnMarket } = await getCurrentCartByMarket(
       marketId,
       userId,
     );
@@ -70,7 +70,7 @@ function buildAddProductsOnMarketCart({
       );
       return productsAdded;
     } catch (exception) {
-      throw GeneralException('Problems to add product on cart', 500);
+      throw new GeneralException('Problems to add products on cart', 500);
     }
   };
 }

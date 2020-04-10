@@ -1,5 +1,5 @@
-// TODO: colocar o campo virtual para calcular o preço total
 const mongoose = require('mongoose');
+const { Product } = require('../../products/models/product');
 
 const cartSchema = new mongoose.Schema({
   user: {
@@ -25,6 +25,37 @@ const cartSchema = new mongoose.Schema({
       quantity: Number,
     },
   ],
+}, {
+  toJSON: { virtuals: true },
 });
+
+cartSchema.methods.total = async function() {
+  if (!Array.isArray(this.products)) {
+    return 0;
+  }
+
+  if (this.products.length < 1) {
+    return 0;
+  }
+
+
+  const promisseProducts = this.products.map(async (
+    { product: productId, quantity } = {},
+  ) => {
+    const product = await Product.findOne({ _id: productId });
+
+    return {
+      product,
+      quantity,
+    };
+  });
+
+  const products = await Promise.all(promisseProducts);
+
+  const totalCart = products.reduce((prev, {product, quantity}) =>
+    prev + ( product.sellPrice * quantity ), 0);
+
+  return totalCart;
+};
 
 module.exports.Cart = mongoose.model('Cart', cartSchema);

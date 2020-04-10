@@ -21,7 +21,12 @@ function buildGetCurrentCartByMarket({
       closed: false,
     });
 
-    return cart;
+    const total = await cart.total();
+
+    return {
+      cart,
+      total,
+    };
   };
 }
 
