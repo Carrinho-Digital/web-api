@@ -25,6 +25,14 @@ const cartSchema = new mongoose.Schema({
       quantity: Number,
     },
   ],
+  delivery: {
+    method: {
+      type: String,
+    },
+    address: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  },
 }, {
   toJSON: { virtuals: true },
 });
@@ -37,7 +45,6 @@ cartSchema.methods.total = async function() {
   if (this.products.length < 1) {
     return 0;
   }
-
 
   const promisseProducts = this.products.map(async (
     { product: productId, quantity } = {},
@@ -55,7 +62,10 @@ cartSchema.methods.total = async function() {
   const totalCart = products.reduce((prev, {product, quantity}) =>
     prev + ( product.sellPrice * quantity ), 0);
 
-  return totalCart;
+  return {
+    cart: totalCart,
+    delivery: 0,
+  };
 };
 
 module.exports.Cart = mongoose.model('Cart', cartSchema);

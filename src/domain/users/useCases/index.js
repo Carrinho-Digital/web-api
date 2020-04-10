@@ -12,6 +12,7 @@ const buildLogin = require('./login');
 const buildGetAddresses = require('./getAddresses');
 const buildRemoveUserAddress = require('./removeUserAddress');
 const buildUpsertUserAddress = require('./upsertUserAddress');
+const buildGetAddressById = require('./getAddressById');
 
 const getAllMarkets = buildGetAllMarkets(paginate);
 const createUser = buildCreateUser({ encrypt });
@@ -20,6 +21,9 @@ const removeUser = buildRemoveUser();
 const authorize = buildAuthorize({ jwt });
 const login = buildLogin({ encrypt, jwt, logger });
 const getAddresses = buildGetAddresses();
+const getAddressById = buildGetAddressById({
+  getAddresses,
+});
 const removeUserAddress = buildRemoveUserAddress();
 const upsertUserAddress = buildUpsertUserAddress();
 
@@ -30,6 +34,7 @@ module.exports = {
   removeUser,
   authorize,
   login,
+  getAddressById,
   getAddresses,
   removeUserAddress,
   upsertUserAddress,

@@ -21,7 +21,11 @@ function buildGetCurrentCartByMarket({
       closed: false,
     });
 
-    const total = await cart.total();
+    let total = 0;
+
+    if (cart) {
+      total = await cart.total();
+    }
 
     return {
       cart,
