@@ -2,7 +2,7 @@ const { getSearchParams } = require('../../../utils/paginate');
 
 const {
   getAllMarkets: getAllMarketsUseCase,
-} = require('../../users/useCases');
+} = require('../useCases');
 
 async function getAllMarkets(request, response) {
   const searchParams = getSearchParams(request);

@@ -7,7 +7,11 @@ const {
 const getAllMarkets = require('./getAllMarkets');
 const favoriteMarket = require('./favoriteMarket');
 
-router.get('/', getAllMarkets);
+router.get('/',
+  authentication,
+  only('CUSTOMER_USER'),
+  getAllMarkets,
+);
 
 router.patch(
   '/favorite',
