@@ -1,4 +1,3 @@
-// TODO: incluir createdAt e updatedAt no schema de produto
 const mongoose = require('mongoose');
 
 const validUnits = [
@@ -58,6 +57,9 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+},
+{
+  timestamps: true,
 });
 
 productSchema.statics.isValidUnit = function(unit = '') {

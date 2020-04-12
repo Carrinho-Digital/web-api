@@ -4,6 +4,7 @@ const { authentication, only } = require('../../../middleware');
 const getCurrentCartByMarket = require('./getCurrentCartByMarket');
 const addProductsOnMarketCart = require('./addProductsOnMarketCart');
 const delivery = require('./delivery');
+const checkout = require('./checkout');
 
 router.patch(
   '/delivery/:marketId',
@@ -19,6 +20,12 @@ router.post(
   addProductsOnMarketCart,
 );
 
+router.post(
+  '/checkout/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
+  checkout,
+);
 
 router.get(
   '/:marketId',
@@ -26,6 +33,5 @@ router.get(
   only('CUSTOMER_USER'),
   getCurrentCartByMarket,
 );
-
 
 module.exports = router;
