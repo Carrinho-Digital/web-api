@@ -40,7 +40,7 @@ jobs:
           flags: "g"
 
       - name: Deploy on Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v3
+        uses: einaregilsson/beanstalk-deploy@v9
         with:
           aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
           aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
