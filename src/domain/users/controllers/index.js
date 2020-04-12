@@ -9,6 +9,7 @@ const addAddress = require('./addAddress');
 const updateAddress = require('./updateAddress');
 const removeAddress = require('./removeAddress');
 const getAddresses = require('./getAddresses');
+const getCurrentUser = require('./getCurrentUser');
 
 router.post('/', saveUser);
 router.put('/', authentication, updateUser);
@@ -18,5 +19,7 @@ router.get('/addresses', authentication, getAddresses);
 router.post('/addresses', authentication, addAddress);
 router.put('/addresses/:addressId', authentication, updateAddress);
 router.delete('/addresses/:addressId', authentication, removeAddress);
+
+router.get('/current', authentication, getCurrentUser);
 
 module.exports = router;

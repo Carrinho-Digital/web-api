@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema({
       neighborhood: String,
     },
   ],
+  favorites: [String],
 }, {
   toJSON: {
     transform: function(document, ret) {

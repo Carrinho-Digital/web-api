@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../../users/models/user');
 
 function buildGetAllMarkets(paginate) {
   const MARKET_TYPE = 'MARKET_USER';
