@@ -43,6 +43,8 @@ const userSchema = new mongoose.Schema({
       buildType: String,
       reference: String,
       neighborhood: String,
+      latitude: Number,
+      longitude: Number,
     },
   ],
   favorites: [String],
