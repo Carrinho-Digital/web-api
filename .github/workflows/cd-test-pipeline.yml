@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -24,7 +24,7 @@ jobs:
         run: npm install --production
 
       - name: Generate Deployment Pacakge
-        run: zip deploy.zip *.js *.json
+        run: zip -r deploy.zip * -x "**node_modules"
 
       - name: Get Timestamp
         uses: gerred/actions/current-time@master
