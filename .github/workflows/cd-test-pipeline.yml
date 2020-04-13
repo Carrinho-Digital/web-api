@@ -1,4 +1,4 @@
-name: CD Testing ELB
+name: Deploy to Google App Engine
 
 on:
   push:
@@ -6,25 +6,13 @@ on:
       - master
 
 jobs:
-  build:
+  setup-build-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@v1
-
-      - name: Setup NodeJS ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install Packages
-        run: npm install --production
-
-      - name: Generate Deployment Pacakge
-        run: zip -r deploy.zip * -x "**node_modules"
+      - name: Checkout
+        uses: actions/checkout@v1
 
       - name: Get Timestamp
         uses: gerred/actions/current-time@master
@@ -39,14 +27,15 @@ jobs:
           replace-with: "-"
           flags: "g"
 
-      - name: Deploy on Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v9
+      # Setup and configure gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
-          aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
-          application_name: carrinho-digital-web-api
-          environment_name: CarrinhoDigitalWebApi-test
-          region: us-east-2
-          version_label: "carrinho-digital-web-api-${{ steps.format-time.outputs.replaced }}"
-          deployment_package: deploy.zip
-          use_existing_version_if_available: true
+          version: "v1.0.0-${{ steps.format-time.outputs.replaced }}"
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALS}}
+
+      # Deploy App to App Engine
+      - name: Deploy
+        run: |
+          gcloud app deploy
