@@ -1,16 +1,24 @@
 const router = require('express').Router();
 const { authentication, only } = require('../../../middleware');
 
-const getCurrentCartByMarket = require('./getCurrentCartByMarket');
-const addProductsOnMarketCart = require('./addProductsOnMarketCart');
 const delivery = require('./delivery');
 const checkout = require('./checkout');
+const payments = require('./payments');
+const getCurrentCartByMarket = require('./getCurrentCartByMarket');
+const addProductsOnMarketCart = require('./addProductsOnMarketCart');
 
 router.patch(
   '/delivery/:marketId',
   authentication,
   only('CUSTOMER_USER'),
   delivery,
+);
+
+router.patch(
+  '/payments/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
+  payments,
 );
 
 router.post(
