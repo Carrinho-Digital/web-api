@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint -c .eslintrc.json .",
     "test": "jest --verbose",
-    "start": "NODE_ENV=development nodemon --exec 'node -r dotenv/config' index.js",
+    "start": "node ./index.js",
+    "start:dev": "NODE_ENV=development nodemon --exec 'node -r dotenv/config' index.js",
     "debug": "NODE_ENV=development nodemon --exec 'node -r dotenv/config' --inspect index.js"
   },
   "husky": {
