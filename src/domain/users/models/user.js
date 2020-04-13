@@ -46,6 +46,24 @@ const userSchema = new mongoose.Schema({
     },
   ],
   favorites: [String],
+  freeDelivery: {
+    type: Boolean,
+    default: false,
+  },
+  deliveryRules: [
+    {
+      distanceInKm: {
+        type: Number,
+      },
+      price: {
+        type: Number,
+      },
+      defaultRule: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
 }, {
   toJSON: {
     transform: function(document, ret) {
