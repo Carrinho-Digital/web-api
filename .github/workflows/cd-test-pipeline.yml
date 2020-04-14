@@ -58,7 +58,7 @@ jobs:
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute ssh --quiet --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "${{ secrets.PROJECT_ID }}"
+          gcloud compute ssh --quiet --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "$PROJECT_ID"
 
       - name: Run Container
         run: |
