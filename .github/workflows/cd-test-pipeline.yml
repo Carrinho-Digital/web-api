@@ -37,7 +37,7 @@ jobs:
         id: dockerContainerRegistry
         name: Build & push Docker image
         with:
-          image: ${{ secrets.PROJECT_ID }}/web-api
+          image: $PROJECT_ID/web-api
           tag: latest
           registry: gcr.io
           dockerfile: Dockerfile
