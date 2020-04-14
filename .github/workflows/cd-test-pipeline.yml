@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v1
 
       - uses: mr-smithers-excellent/docker-build-push@v3
-        id: docker-container-registry
+        id: dockerContainerRegistry
         name: Build & push Docker image
         with:
           image: ${{ secrets.PROJECT_ID }}/web-api
@@ -54,4 +54,4 @@ jobs:
       - name: Run Container
         run: |
           gcloud beta compute ssh --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "${{ secrets.PROJECT_ID }}"
-          sudo docker -e PORT=8080 -e MONGODB_URI=${{ secrets.MONGO_URI }} -e SALT=${{ secrets.SALT }} -e SECRET=${{ secrets.SECRET }} -e ISSUER=${{ secrets.ISSUER }} -e AUDIENCE=${{ secrets.AUDIENCE }} -e EXPIRE_IN_MINUTES=${{ secrets.EXPIRE_IN_MINUTES }} -p 8080:8080 run ${{ docker-container-registry.outputs.imageFullName }}
+          sudo docker -e PORT=8080 -e MONGODB_URI=${{ secrets.MONGO_URI }} -e SALT=${{ secrets.SALT }} -e SECRET=${{ secrets.SECRET }} -e ISSUER=${{ secrets.ISSUER }} -e AUDIENCE=${{ secrets.AUDIENCE }} -e EXPIRE_IN_MINUTES=${{ secrets.EXPIRE_IN_MINUTES }} -p 8080:8080 run ${{ dockerContainerRegistry.outputs.imageFullName }}
