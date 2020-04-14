@@ -58,5 +58,7 @@ jobs:
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute ssh --quiet --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "$PROJECT_ID"
-          sudo docker run -d -e PORT='8080' -e MONGODB_URI='${{ secrets.MONGO_URI }}' -e SALT='${{ secrets.SALT }}' -e SECRET='${{ secrets.SECRET }}' -e ISSUER='${{ secrets.ISSUER }}' -e AUDIENCE='${{ secrets.AUDIENCE }}' -e EXPIRE_IN_MINUTES='${{ secrets.EXPIRE_IN_MINUTES }}' -p 8080:8080 --name webapi ${{ steps.dockerContainerRegistry.outputs.imageFullName }}
+          gcloud compute instances update-container carrinho-digital-webapi \
+          --container-image ${{ steps.dockerContainerRegistry.outputs.imageFullName }} \
+          --allow tcp:8080 --target-tags http-server \
+          --container-env PORT=8080,MONGODB_URI=${{ secrets.MONGO_URI }},SALT=${{ secrets.SALT }},SECRET=${{ secrets.SECRET }},ISSUER=${{ secrets.ISSUER }},AUDIENCE=${{ secrets.AUDIENCE }},EXPIRE_IN_MINUTES=${{ secrets.EXPIRE_IN_MINUTES }}
