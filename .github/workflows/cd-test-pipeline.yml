@@ -58,7 +58,7 @@ jobs:
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute instances create-with-container carrinho-digital-webapi \
+          gcloud compute instances update-container carrinho-digital-webapi \
           --container-image ${{ steps.dockerContainerRegistry.outputs.imageFullName }} \
           --tags http-server \
           --zone us-central1-a \
