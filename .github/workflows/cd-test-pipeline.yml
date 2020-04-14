@@ -60,6 +60,5 @@ jobs:
         run: |
           gcloud compute instances update-container carrinho-digital-webapi \
           --container-image ${{ steps.dockerContainerRegistry.outputs.imageFullName }} \
-          --tags http-server \
           --zone us-central1-a \
           --container-env PORT=8080,MONGODB_URI='${{ secrets.MONGO_URI }}',SALT='${{ secrets.SALT }}',SECRET='${{ secrets.SECRET }}',ISSUER='${{ secrets.ISSUER }}',AUDIENCE='${{ secrets.AUDIENCE }}',EXPIRE_IN_MINUTES='${{ secrets.EXPIRE_IN_MINUTES }}'
