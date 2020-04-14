@@ -12,12 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Deploy to Google App Engine
+name: Deploy to Google Cloud Engine
 
 on:
   push:
     branches:
       - master
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
+  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
 
 jobs:
   setup-build-deploy:
@@ -28,29 +33,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      # # Setup and configure gcloud CLI
-      # - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      #   with:
-      #     version: "286.0.0"
-      #     project_id: ${{ secrets.GCP_PROJECT_ID }}
-      #     service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-      #     service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALS}}
-
-      # # Deploy App to App Engine
-      # - name: Deploy
-      #   run: |
-      #     gcloud app deploy
-
-      - name: Initialize Google Cloud SDK
-        uses: zxyle/publish-gae-action@master
+      - uses: mr-smithers-excellent/docker-build-push@v3
+        id: docker-container-registry
+        name: Build & push Docker image
         with:
+          image: ${{ secrets.PROJECT_ID }}/web-api
+          tag: latest
+          registry: gcr.io
+          dockerfile: Dockerfile
+          username: _json_key
+          password: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
+
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: "286.0.0"
           service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          gae_variables: ${{ secrets.GCP_GAE_ENV_VARS }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
-      - name: Publish app to Google App Engine
+      - name: Run Container
         run: |
-          gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=client-secret.json
-          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          gcloud -q app deploy app.yaml --promote
+          gcloud beta compute ssh --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "${{ secrets.PROJECT_ID }}"
+          sudo docker -e PORT=8080 -e MONGODB_URI=${{ secrets.MONGO_URI }} -e SALT=${{ secrets.SALT }} -e SECRET=${{ secrets.SECRET }} -e ISSUER=${{ secrets.ISSUER }} -e AUDIENCE=${{ secrets.AUDIENCE }} -e EXPIRE_IN_MINUTES=${{ secrets.EXPIRE_IN_MINUTES }} -p 8080:8080 run ${{ docker-container-registry.outputs.imageFullName }}

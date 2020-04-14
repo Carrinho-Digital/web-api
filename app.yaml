@@ -1,5 +1,0 @@
-service: web-api
-runtime: nodejs10
-instance_class: F1
-vpc_access_connector:
-  name: "projects/carrinhodigital/locations/us-central1/connectors/app-engine-connector"
