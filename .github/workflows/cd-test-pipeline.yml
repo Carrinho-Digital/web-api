@@ -42,7 +42,7 @@ jobs:
           registry: gcr.io
           dockerfile: Dockerfile
           username: _json_key
-          password: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
+          password: ${{ secrets.GCP_APPLICATION_CREDENTIALS_JSON }}
 
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
