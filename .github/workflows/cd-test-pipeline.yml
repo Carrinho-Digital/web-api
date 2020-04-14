@@ -53,5 +53,5 @@ jobs:
 
       - name: Run Container
         run: |
-          gcloud beta compute ssh --quiet --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "${{ secrets.PROJECT_ID }}"
+          gcloud compute ssh --quiet --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "${{ secrets.PROJECT_ID }}"
           sudo docker -e PORT=8080 -e MONGODB_URI=${{ secrets.MONGO_URI }} -e SALT=${{ secrets.SALT }} -e SECRET=${{ secrets.SECRET }} -e ISSUER=${{ secrets.ISSUER }} -e AUDIENCE=${{ secrets.AUDIENCE }} -e EXPIRE_IN_MINUTES=${{ secrets.EXPIRE_IN_MINUTES }} -p 8080:8080 run ${{ steps.dockerContainerRegistry.outputs.imageFullName }}
