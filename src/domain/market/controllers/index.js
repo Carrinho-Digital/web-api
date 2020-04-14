@@ -10,18 +10,15 @@ const addDeliveryRule = require('./addDeliveryRule');
 const getDeliveryRules = require('./getDeliveryRules');
 const updateDeliveryRule = require('./updateDeliveryRule');
 const deleteDeliveryRule = require('./deleteDeliveryRule');
+const addPaymentMethod = require('./addPaymentMethod');
+const deletePaymentMethod = require('./deletePaymentMethod');
+const updatePaymentMethod = require('./updatePaymentMethod');
+const getPaymentMethods = require('./getPaymentMethods');
 
 router.get('/',
   authentication,
   only('CUSTOMER_USER'),
   getAllMarkets,
-);
-
-router.patch(
-  '/favorite',
-  authentication,
-  only('CUSTOMER_USER'),
-  favoriteMarket,
 );
 
 router.get(
@@ -31,11 +28,32 @@ router.get(
   getDeliveryRules,
 );
 
+router.get(
+  '/payments',
+  authentication,
+  only('MARKET_USER'),
+  getPaymentMethods,
+);
+
 router.post(
   '/rules',
   authentication,
   only('MARKET_USER'),
   addDeliveryRule,
+);
+
+router.post(
+  '/payments',
+  authentication,
+  only('MARKET_USER'),
+  addPaymentMethod,
+);
+
+router.patch(
+  '/favorite',
+  authentication,
+  only('CUSTOMER_USER'),
+  favoriteMarket,
 );
 
 router.put(
@@ -45,6 +63,14 @@ router.put(
   updateDeliveryRule,
 );
 
+router.put(
+  '/payments/:paymentId',
+  authentication,
+  only('MARKET_USER'),
+  updatePaymentMethod,
+);
+
+
 router.delete(
   '/rules/:ruleId',
   authentication,
@@ -52,5 +78,11 @@ router.delete(
   deleteDeliveryRule,
 );
 
+router.delete(
+  '/payments/:paymentId',
+  authentication,
+  only('MARKET_USER'),
+  deletePaymentMethod,
+);
 
 module.exports = router;
