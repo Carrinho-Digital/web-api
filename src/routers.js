@@ -1,8 +1,8 @@
 const authRoutes = require('./domain/auth/controllers');
 const userRoutes = require('./domain/users/controllers');
 const productRoutes = require('./domain/products/controllers');
-const marketRoutes = require('./domain/market/controllers');
-const cartRoutes = require('./domain/cart/controllers');
+const marketRoutes = require('./domain/markets/controllers');
+const cartRoutes = require('./domain/carts/controllers');
 
 module.exports = router => {
   router.use('/v1/markets', marketRoutes);
