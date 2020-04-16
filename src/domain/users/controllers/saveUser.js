@@ -18,7 +18,7 @@ async function save(request, response) {
       data: createdUser,
     });
   } catch (exception) {
-    return response.status(500).json({
+    return response.status(exception.status || 500).json({
       message: 'CANNOT_SAVE_USER',
       errors: [
         exception.message,

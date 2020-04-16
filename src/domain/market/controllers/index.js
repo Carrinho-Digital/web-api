@@ -14,6 +14,7 @@ const addPaymentMethod = require('./addPaymentMethod');
 const deletePaymentMethod = require('./deletePaymentMethod');
 const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
+const categories = require('./categories');
 
 router.get('/',
   authentication,
@@ -84,5 +85,7 @@ router.delete(
   only('MARKET_USER'),
   deletePaymentMethod,
 );
+
+router.get('/categories', authentication, categories);
 
 module.exports = router;
