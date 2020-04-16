@@ -1,5 +1,16 @@
 const router = require('express').Router();
+const {
+  only,
+  authentication,
+} = require('../../../middleware');
 
-router.get();
+const addPromotion = require('./addPromotion');
+
+router.post(
+  '/',
+  authentication,
+  only('MARKET_USER'),
+  addPromotion,
+);
 
 module.exports = router;

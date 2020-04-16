@@ -21,9 +21,11 @@ const promotionSchema = new mongoose.Schema({
   },
   discountInPercent: {
     type: Number,
+    default: 0,
   },
   discountInPrice: {
     type: Number,
+    default: 0,
   },
 }, {
   timestamps: true,
