@@ -13,7 +13,7 @@ function buildGetAllMarkets(paginate) {
 
     const markets = await User.find(
       marketQuery,
-      'name email document phones addresses online',
+      'name email document phones addresses online category',
       {
         skip: searchParams.limit * searchParams.page,
         limit: searchParams.limit,

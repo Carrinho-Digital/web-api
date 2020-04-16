@@ -4,6 +4,8 @@ const {
   getUserById,
 } = require('../../users/useCases');
 
+const buildCategories = require('./categories');
+
 const buildMarketExists = require('./marketExists');
 const buildFavoriteMarket = require('./favoriteMarket');
 const buildGetAllMarkets = require('./getAllMarkets');
@@ -16,6 +18,7 @@ const buildUpsertPaymentMethod = require('./upsertPaymentMethod');
 const buildGetPaymentMethods = require('./getPaymentMethods');
 const buildDeletePaymentMethod = require('./deletePaymentMethod');
 
+const categories = buildCategories();
 const getAllMarkets = buildGetAllMarkets(paginate);
 const marketExists = buildMarketExists();
 const favoriteMarket = buildFavoriteMarket({ marketExists });
@@ -45,4 +48,5 @@ module.exports = {
   upsertPaymentMethod,
   getPaymentMethods,
   deletePaymentMethod,
+  categories,
 };
