@@ -7,6 +7,8 @@ const saveAddressDto = Joi.object({
   buildType: Joi.string().required(),
   reference: Joi.string(),
   neighborhood: Joi.string().required(),
+  latitude: Joi.number().required(),
+  longitude: Joi.number().required(),
 });
 
 module.exports = saveAddressDto;
