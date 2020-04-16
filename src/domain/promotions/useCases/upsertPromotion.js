@@ -29,34 +29,40 @@ function buildUpsertPromotion({
   }
 
   async function isPromotionAvailable(promotion) {
-    let promotions = [];
+    let promotionQuery = {};
 
-    if (promotion.product) {
-      if (promotion.undefinedTime === false) {
-        promotions = await Promotion.find(
-          {
-            product: promotion.product.toString(),
-            startDate: {
-              $lte: promotion.endDate,
-            },
-            endDate: {
-              $gte: promotion.startDate,
-            },
-          },
-        );
-      } else {
-        promotions = await Promotion.find(
-          {
-            product: promotion.product.toString(),
-            endDate: {
-              $gte: new Date(),
-            },
-          },
-        );
-      }
+    if (promotion.undefinedTime === false) {
+      promotionQuery = {
+        startDate: {
+          $lte: promotion.endDate,
+        },
+        endDate: {
+          $gte: promotion.startDate,
+        },
+      };
+    } else {
+      promotionQuery = {
+        $gte: new Date(),
+      };
     }
 
-    return promotions;
+    if (promotion.product) {
+      promotionQuery = {
+        ...promotionQuery,
+        product: promotion.product.toString(),
+      };
+    }
+
+    if (promotion.tags) {
+      promotionQuery = {
+        ...promotionQuery,
+        tags: {
+          $all: promotion.tags,
+        },
+      };
+    }
+
+    return await Promotion.find(promotionQuery);
   }
 
   return async function upsertPromotion(promotionId, marketId, promotion) {
