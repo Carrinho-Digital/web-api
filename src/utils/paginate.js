@@ -11,9 +11,27 @@ async function paginate(
 }
 
 function getSearchParams(request) {
+  const filterBy = request.query.filterBy;
+  let filter = {};
+
+  if (filterBy) {
+    const filterValues = filterBy.split(',');
+
+    if (filterValues.length > 0) {
+      filter = filterValues.reduce((current, filterValue) => {
+        const [field, value] = filterValue.split(':');
+        return {
+          ...current,
+          [field]: value,
+        };
+      }, {});
+    }
+  }
+
   return {
     page: parseInt(request.query.page) || 0,
     limit: parseInt(request.query.limit) || 10,
+    query: filter,
   };
 }
 
