@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { Promotion } = require('../models/promotion');
 const {
   General: GeneralException,
@@ -27,15 +28,14 @@ function buildUpsertPromotion({
     );
   }
 
-  // TODO: melhorar a validação das promoções
   async function isPromotionAvailable(promotion) {
     let promotions = [];
 
-    if (promotion.productId) {
+    if (promotion.product) {
       if (promotion.undefinedTime === false) {
         promotions = await Promotion.find(
           {
-            product: promotion.productId,
+            product: promotion.product.toString(),
             startDate: {
               $lte: promotion.endDate,
             },
@@ -47,7 +47,7 @@ function buildUpsertPromotion({
       } else {
         promotions = await Promotion.find(
           {
-            product: promotion.productId,
+            product: promotion.product.toString(),
             endDate: {
               $gte: new Date(),
             },
@@ -78,7 +78,9 @@ function buildUpsertPromotion({
       }
 
       delete promotion.tags;
-      promotion.productId = product._id;
+      delete promotion.productId;
+
+      promotion.product = product._id;
     }
 
     if (promotion.tags) {
@@ -116,6 +118,11 @@ function buildUpsertPromotion({
     if (promotion.undefinedTime === true) {
       delete promotion.startDate;
       delete promotion.endDate;
+    }
+
+    if (promotion.undefinedTime === false) {
+      promotion.startDate = moment(promotion.startDate).utc().format();
+      promotion.endDate = moment(promotion.endDate).utc().format();
     }
 
     if (promotion.discountInPercent > 0) {
