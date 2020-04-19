@@ -3,6 +3,7 @@ const { Promotion } = require('../models/promotion');
 const {
   General: GeneralException,
   PromotionsNotAvailable: PromotionsNotAvailableException,
+  NotFound: NotFoundException,
 } = require('../../../exceptions');
 
 function buildUpsertPromotion({
@@ -13,8 +14,8 @@ function buildUpsertPromotion({
     return promotion.save();
   }
 
-  function updatePromotion(marketId, promotionId, _promotion) {
-    return Promotion.findOneAndUpdate(
+  async function updatePromotion(marketId, promotionId, _promotion) {
+    const updated = await Promotion.findOneAndUpdate(
       {
         '_id': promotionId,
         'market': marketId,
@@ -26,9 +27,15 @@ function buildUpsertPromotion({
         rawResult: true,
       },
     );
+
+    if (updated.value) {
+      return updated.value;
+    }
+
+    throw new NotFoundException('Cannot found promotion to update');
   }
 
-  async function isPromotionAvailable(promotion) {
+  async function isPromotionAvailable(promotionId, promotion) {
     let promotionQuery = {};
 
     if (promotion.undefinedTime === false) {
@@ -42,7 +49,9 @@ function buildUpsertPromotion({
       };
     } else {
       promotionQuery = {
-        $gte: new Date(),
+        endDate: {
+          $gte: new Date(),
+        },
       };
     }
 
@@ -58,6 +67,15 @@ function buildUpsertPromotion({
         ...promotionQuery,
         tags: {
           $all: promotion.tags,
+        },
+      };
+    }
+
+    if (promotionId) {
+      promotionQuery = {
+        ...promotionQuery,
+        _id: {
+          $ne: promotionId,
         },
       };
     }
@@ -83,7 +101,7 @@ function buildUpsertPromotion({
           'You cannot create a promotion for this product');
       }
 
-      delete promotion.tags;
+      promotion.tags = [];
       delete promotion.productId;
 
       promotion.product = product._id;
@@ -94,7 +112,7 @@ function buildUpsertPromotion({
         throw new GeneralException('The field tags must be array');
       }
 
-      delete promotion.productId;
+      promotion.productId = null;
     }
 
     if (promotion.discountInPercent) {
@@ -122,8 +140,8 @@ function buildUpsertPromotion({
     }
 
     if (promotion.undefinedTime === true) {
-      delete promotion.startDate;
-      delete promotion.endDate;
+      promotion.startDate = null;
+      promotion.endDate = null;
     }
 
     if (promotion.undefinedTime === false) {
@@ -132,14 +150,15 @@ function buildUpsertPromotion({
     }
 
     if (promotion.discountInPercent > 0) {
-      delete promotion.discountInPrice;
+      promotion.discountInPrice = 0;
     }
 
     if (promotion.discountInPrice > 0) {
-      delete promotion.discountInPercent;
+      promotion.discountInPercent = 0;
     }
 
-    const promotionIsAvailable = await isPromotionAvailable(promotion);
+    const promotionIsAvailable = await isPromotionAvailable(
+      promotionId, promotion);
 
     if (promotionIsAvailable.length > 0) {
       throw new PromotionsNotAvailableException(

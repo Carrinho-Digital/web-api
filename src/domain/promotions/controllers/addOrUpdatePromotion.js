@@ -9,6 +9,7 @@ const {
 async function addPromotion(request, response) {
   const marketId = request.user._id;
   const addPromotionBody = request.body;
+  const promotionId = request.params.promotionId || null;
 
   const { error, value } = promotionDto.validate(addPromotionBody);
 
@@ -18,13 +19,13 @@ async function addPromotion(request, response) {
 
   try {
     const promotion = await upsertPromotionUseCase(
-      null,
+      promotionId,
       marketId,
       value,
     );
 
     return response.status(201).json({
-      message: 'PROMOTION_ADDED',
+      message: 'PROMOTION_SAVED',
       data: promotion,
       success: true,
     });
