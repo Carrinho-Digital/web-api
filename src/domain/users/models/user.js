@@ -80,6 +80,10 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
   },
+  birthDate: {
+    type: Date,
+    required: true,
+  },
   isDeleted: {
     type: Boolean,
     default: false,
