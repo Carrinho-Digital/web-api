@@ -82,7 +82,6 @@ const userSchema = new mongoose.Schema({
   },
   birthDate: {
     type: Date,
-    required: true,
   },
   isDeleted: {
     type: Boolean,
