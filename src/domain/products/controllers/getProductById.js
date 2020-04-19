@@ -1,5 +1,5 @@
 const {
-  getProductById: getProductByIdUseCase,
+  getProduct: getProductUseCase,
 } = require('../useCases');
 
 async function getProductById(request, response) {
@@ -16,7 +16,7 @@ async function getProductById(request, response) {
   };
 
   try {
-    const product = await getProductByIdUseCase(
+    const product = await getProductUseCase(
       productId,
       searchParams,
     );

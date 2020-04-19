@@ -1,4 +1,3 @@
-// TODO: incluir createdAt e updatedAt no schema de produto
 const mongoose = require('mongoose');
 
 const validUnits = [

@@ -12,6 +12,7 @@ function buildSaveProduct() {
       }
     }
 
+    product.createdAt = new Date();
     const productSaved = await Product.create(product);
 
     return productSaved;
