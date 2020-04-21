@@ -53,6 +53,8 @@
     "mongoose": "^5.9.5",
     "morgan": "^1.10.0",
     "npm": "^6.13.7",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
     "winston": "^3.2.1"
   }
 }
