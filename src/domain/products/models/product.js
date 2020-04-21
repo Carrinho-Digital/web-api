@@ -41,38 +41,10 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   market: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  promotions: [
-    {
-      startDate: {
-        type: Date,
-      },
-      endDate: {
-        type: Date,
-      },
-      discountInPercent: {
-        type: Number,
-      },
-      discountInPrice: {
-        type: Number,
-      },
-    },
-  ],
 });
 
 productSchema.statics.isValidUnit = function(unit = '') {
   return validUnits.includes(unit.toLowerCase());
-};
-
-productSchema.statics.findAllMarketProducts = function(
-  marketId, query, searchParams) {
-  return this.find(
-    {
-      ...query,
-      market: marketId,
-    },
-    null,
-    searchParams,
-  );
 };
 
 module.exports.Product = mongoose.model('Product', productSchema);

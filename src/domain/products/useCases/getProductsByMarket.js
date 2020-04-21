@@ -1,6 +1,19 @@
 const { Product } = require('../models/product');
 
-function buildGetProductsByMarket(paginate) {
+function buildGetProductsByMarket({
+  paginate,
+  findCurrentPromotionByProduct,
+}) {
+  async function getPromotionByProduct(product) {
+    return {
+      ...product.toObject(),
+      promotion: await findCurrentPromotionByProduct(
+        product,
+        product.market._id,
+      ),
+    };
+  }
+
   return async function getProductsByMarket(
     marketId, searchParams = { limit: 5, page: 0, query: {} }) {
     const customerQuery = {
@@ -12,15 +25,19 @@ function buildGetProductsByMarket(paginate) {
 
     const products = await Product.find(
       customerQuery,
-      'name description sellPrice size unit promotions amount tags',
+      '_id name description sellPrice size unit amount tags',
       {
         skip: searchParams.limit * searchParams.page,
         limit: searchParams.limit,
       },
     ).populate('market', 'name phones email');
 
+    const productsWithPromotions = await Promise.all(
+      products.map(getPromotionByProduct),
+    );
+
     return paginate(
-      products,
+      productsWithPromotions,
       {
         ...searchParams,
         query: customerQuery,
