@@ -1,6 +1,7 @@
 const { getAllProducts } = require('../useCases');
 
 async function getProducts(request, response) {
+  const marketId = request.user._id;
   const searchParams = {
     limit: parseInt(request.query.limit, 10) || 10,
     page: parseInt(request.query.page, 10) || 0,
@@ -8,7 +9,7 @@ async function getProducts(request, response) {
 
   try {
     const products = await getAllProducts(
-      request.user,
+      marketId,
       searchParams,
     );
 

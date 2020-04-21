@@ -6,9 +6,7 @@ const {
   NotFound: NotFoundException,
 } = require('../../../exceptions');
 
-function buildUpsertPromotion({
-  getProductById,
-}) {
+function buildUpsertPromotion(getProductById) {
   function savePromotion(_promotion) {
     const promotion = new Promotion(_promotion);
     return promotion.save();
@@ -55,14 +53,14 @@ function buildUpsertPromotion({
       };
     }
 
-    if (promotion.product) {
+    if (promotion.product != null) {
       promotionQuery = {
         ...promotionQuery,
         product: promotion.product.toString(),
       };
     }
 
-    if (promotion.tags) {
+    if (promotion.tags && promotion.tags.length > 0) {
       promotionQuery = {
         ...promotionQuery,
         tags: {
@@ -107,12 +105,12 @@ function buildUpsertPromotion({
       promotion.product = product._id;
     }
 
-    if (promotion.tags) {
+    if (promotion.tags && promotion.tags.length > 0) {
       if (!Array.isArray(promotion.tags)) {
         throw new GeneralException('The field tags must be array');
       }
 
-      promotion.productId = null;
+      promotion.product = null;
     }
 
     if (promotion.discountInPercent) {

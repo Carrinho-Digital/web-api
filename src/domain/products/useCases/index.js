@@ -1,4 +1,8 @@
 const { paginate } = require('../../../utils/paginate');
+const _buildFindCurrentPromotion =
+  require('../../promotions/useCases/findCurrentPromotionByProduct');
+
+const _findCurrentPromotion = _buildFindCurrentPromotion();
 
 const buildGetAllProducts = require('./getAllProducts');
 const buildGetProduct = require('./getProduct');
@@ -11,7 +15,10 @@ const buildProductHasQuantity = require('./productHasQuantity');
 const buildGetProductById = require('./getProductById');
 
 const getAllProducts = buildGetAllProducts(paginate);
-const getProductsByMarket = buildGetProductsByMarket(paginate);
+const getProductsByMarket = buildGetProductsByMarket({
+  paginate,
+  findCurrentPromotionByProduct: _findCurrentPromotion,
+});
 const saveProduct = buildSaveProduct();
 const updateProduct = buildUpdateProduct();
 const removeProduct = buildRemoveProduct();
@@ -21,6 +28,7 @@ const productHasQuantity = buildProductHasQuantity();
 const getProductById = buildGetProductById();
 
 module.exports = {
+  getProductById,
   getAllProducts,
   belowsToMarket,
   saveProduct,
@@ -29,5 +37,4 @@ module.exports = {
   getProduct,
   getProductsByMarket,
   productHasQuantity,
-  getProductById,
 };
