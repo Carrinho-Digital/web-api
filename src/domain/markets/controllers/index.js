@@ -14,6 +14,7 @@ const addPaymentMethod = require('./addPaymentMethod');
 const deletePaymentMethod = require('./deletePaymentMethod');
 const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
+const getCurrentMarketTags = require('./getCurrentMarketTags');
 const categories = require('./categories');
 
 router.get('/',
@@ -34,6 +35,13 @@ router.get(
   authentication,
   only('MARKET_USER'),
   getPaymentMethods,
+);
+
+router.get(
+  '/tags',
+  authentication,
+  only('MARKET_USER'),
+  getCurrentMarketTags,
 );
 
 router.post(
@@ -70,7 +78,6 @@ router.put(
   only('MARKET_USER'),
   updatePaymentMethod,
 );
-
 
 router.delete(
   '/rules/:ruleId',

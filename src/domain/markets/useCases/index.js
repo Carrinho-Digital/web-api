@@ -13,6 +13,7 @@ const buildFreeDeliveryRule = require('./freeDeliveryRule');
 const buildUpsertDeliveryRule = require('./upsertDeliveryRule');
 const buildGetDeliveryRules = require('./getDeliveryRules');
 const buildDeleteDeliveryRule = require('./deleteDeliveryRule');
+const buildGetMarketTags = require('./getMarketTags');
 
 const buildUpsertPaymentMethod = require('./upsertPaymentMethod');
 const buildGetPaymentMethods = require('./getPaymentMethods');
@@ -26,6 +27,7 @@ const freeDeliveryRule = buildFreeDeliveryRule();
 const upsertDeliveryRule = buildUpsertDeliveryRule();
 const getDeliveryRules = buildGetDeliveryRules();
 const deleteDeliveryRule = buildDeleteDeliveryRule();
+const getMarketTags = buildGetMarketTags();
 
 const getPaymentMethods = buildGetPaymentMethods({
   getUserById,
@@ -49,4 +51,5 @@ module.exports = {
   getPaymentMethods,
   deletePaymentMethod,
   categories,
+  getMarketTags,
 };
