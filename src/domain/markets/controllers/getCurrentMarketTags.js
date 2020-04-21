@@ -3,7 +3,21 @@ const {
 } = require('../useCases');
 
 async function getCurrentMarketTags(request, response) {
-  const marketId = request.user._id;
+  let marketId = null;
+
+  if (request.user.type === 'MARKET_USER') {
+    marketId = request.user._id;
+  } else if (request.user.type === 'CUSTOMER_USER') {
+    marketId = request.params.marketId;
+  } else {
+    return response.status(403).json({
+      success: false,
+      errors: [
+        'Forbidden action',
+      ],
+      message: 'CANNOT_GET_MARKET_TAGS',
+    });
+  }
 
   try {
     const marketTags = await getMarketTags(marketId);
