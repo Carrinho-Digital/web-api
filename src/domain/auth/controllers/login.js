@@ -13,7 +13,11 @@ async function login(request, response) {
   const { email, password } = loginBody.value;
 
   try {
-    const token = await loginUser(email, password);
+    const token = await loginUser(
+      email,
+      password,
+      request.loginType,
+    );
 
     if (!token) {
       return response.status(404).json({
