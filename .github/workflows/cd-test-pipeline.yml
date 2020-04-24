@@ -20,9 +20,9 @@ on:
       - master
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
-  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
+  PROJECT_ID: carrinhodigital
+  GCE_INSTANCE: dev-webapi-instance
+  GCE_INSTANCE_ZONE: us-central1-a
 
 jobs:
   setup-build-deploy:
@@ -33,32 +33,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - uses: mr-smithers-excellent/docker-build-push@v3
-        id: dockerContainerRegistry
-        name: Build & push Docker image
-        with:
-          image: $PROJECT_ID/web-api
-          tag: latest
-          registry: gcr.io
-          dockerfile: Dockerfile
-          username: _json_key
-          password: ${{ secrets.GCP_APPLICATION_CREDENTIALS_JSON }}
-
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: "286.0.0"
           service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: $PROJECT_ID
 
       - name: "Setup GCP Project"
         run: |
-          gcloud --quiet auth configure-docker
-          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+          gcloud config set project $PROJECT_ID
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute instances update-container carrinho-digital-webapi \
-          --container-image ${{ steps.dockerContainerRegistry.outputs.imageFullName }} \
-          --zone us-central1-a \
-          --container-env PORT=8080,MONGODB_URI='${{ secrets.MONGO_URI }}',SALT='${{ secrets.SALT }}',SECRET='${{ secrets.SECRET }}',ISSUER='${{ secrets.ISSUER }}',AUDIENCE='${{ secrets.AUDIENCE }}',EXPIRE_IN_MINUTES='${{ secrets.EXPIRE_IN_MINUTES }}'
+          gcloud compute ssh --zone "$GCE_INSTANCE_ZONE" "$GCE_INSTANCE" --project "$PROJECT_ID"
+          gcloud compute scp ${{ github.repository }} $GCE_INSTANCE:/usr/webapi/
+          cd /usr/webapi/
+          npm install --production
+          npm start
