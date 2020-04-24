@@ -5,8 +5,10 @@ const saveAddressDto = Joi.object({
   number: Joi.string().required(),
   zipcode: Joi.string().required(),
   buildType: Joi.string().required(),
-  reference: Joi.string().required(),
+  reference: Joi.string(),
   neighborhood: Joi.string().required(),
+  latitude: Joi.number().required(),
+  longitude: Joi.number().required(),
 });
 
 module.exports = saveAddressDto;

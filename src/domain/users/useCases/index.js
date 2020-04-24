@@ -12,15 +12,15 @@ const buildRemoveUserAddress = require('./removeUserAddress');
 const buildUpsertUserAddress = require('./upsertUserAddress');
 const buildGetUserById = require('./getUserById');
 
+const getUserById = buildGetUserById();
 const createUser = buildCreateUser({ encrypt });
-const updateUser = buildUpdateUser({ encrypt });
+const updateUser = buildUpdateUser({ encrypt, getUserById });
 const removeUser = buildRemoveUser();
 const authorize = buildAuthorize({ jwt });
 const login = buildLogin({ encrypt, jwt, logger });
 const getAddresses = buildGetAddresses();
 const removeUserAddress = buildRemoveUserAddress();
 const upsertUserAddress = buildUpsertUserAddress();
-const getUserById = buildGetUserById();
 
 module.exports = {
   createUser,

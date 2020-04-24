@@ -13,6 +13,7 @@ function buildUpdateProduct() {
       }
     }
 
+    product.updatedAt = new Date();
     const updatedProduct = await Product.findOneAndUpdate(
       {
         _id: productId,

@@ -15,11 +15,11 @@ services:
   webapi:
     build: ../
     ports:
-      - "8001:8001"
+      - "8000:8000"
     networks:
       - dnet
     environment:
-      - PORT=8001
+      - PORT=8000
       - MONGODB_URI=mongodb://root:example@mongodb:27017/admin
       - SALT=12
       - SECRET=secret

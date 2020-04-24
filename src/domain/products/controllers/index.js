@@ -1,16 +1,28 @@
 const router = require('express').Router();
+const { authentication, only } = require('../../../middleware');
 
 const getProducts = require('./getProducts');
-const getProductById = require('./getProductById');
+const getProduct = require('./getProductById');
 const getProductsByMarket = require('./getProductsByMarket');
 const saveProduct = require('./saveProduct');
 const updateProduct = require('./updateProduct');
 const removeProduct = require('./removeProduct');
-const { authentication } = require('../../../middleware');
 
-router.get('/', authentication, getProducts);
-router.get('/:productId', authentication, getProductById);
-router.get('/market/:marketId', authentication, getProductsByMarket);
+router.get(
+  '/',
+  authentication,
+  only('MARKET_USER'),
+  getProducts,
+);
+
+router.get('/:productId', authentication, getProduct);
+
+router.get(
+  '/market/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
+  getProductsByMarket,
+);
 
 router.post('/', authentication, saveProduct);
 

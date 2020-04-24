@@ -1,5 +1,43 @@
 const mongoose = require('mongoose');
 
+const marketCategories = [
+  {
+    image: '',
+    categoryId: 1,
+    category: 'Mercado',
+  },
+  {
+    image: '',
+    categoryId: 2,
+    category: 'Farmácia',
+  },
+  {
+    image: '',
+    categoryId: 3,
+    category: 'Açougue',
+  },
+  {
+    image: '',
+    categoryId: 4,
+    category: 'Água e Gás',
+  },
+  {
+    image: '',
+    categoryId: 5,
+    category: 'Bebidas',
+  },
+  {
+    image: '',
+    categoryId: 6,
+    category: 'Pet Shop',
+  },
+  {
+    image: '',
+    categoryId: 7,
+    category: 'Variedades',
+  },
+];
+
 const authorizedTypes = [
   'MARKET_USER',
   'CUSTOMER_USER',
@@ -42,6 +80,9 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
   },
+  birthDate: {
+    type: Date,
+  },
   isDeleted: {
     type: Boolean,
     default: false,
@@ -51,6 +92,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  category: {
+    type: Number,
+  },
   addresses: [
     {
       street: String,
@@ -59,6 +103,8 @@ const userSchema = new mongoose.Schema({
       buildType: String,
       reference: String,
       neighborhood: String,
+      latitude: Number,
+      longitude: Number,
     },
   ],
   favorites: [String],
@@ -101,6 +147,17 @@ const userSchema = new mongoose.Schema({
 
 userSchema.statics.isValidPaymentMethod = function(payment) {
   return availablePaymentsMethods.includes(payment);
+};
+
+userSchema.statics.getCategories = function() {
+  return [...marketCategories];
+};
+
+userSchema.statics.getMarketCategory = function(categoryId) {
+  const marketCategory = marketCategories
+    .find(marketCategory => marketCategory.categoryId === categoryId);
+
+  return marketCategory;
 };
 
 userSchema.statics.isValidType = function(type) {

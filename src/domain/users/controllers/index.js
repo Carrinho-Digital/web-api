@@ -2,7 +2,9 @@ const router = require('express').Router();
 
 const { authentication } = require('../../../middleware');
 
-const saveUser = require('./saveUser');
+const createMarketUser = require('./createMarketUser');
+const createCustomerUser = require('./createCustomerUser');
+
 const updateUser = require('./updateUser');
 const removeUser = require('./removeUser');
 const addAddress = require('./addAddress');
@@ -11,7 +13,9 @@ const removeAddress = require('./removeAddress');
 const getAddresses = require('./getAddresses');
 const getCurrentUser = require('./getCurrentUser');
 
-router.post('/', saveUser);
+router.post('/market', createMarketUser);
+router.post('/customer', createCustomerUser);
+
 router.put('/', authentication, updateUser);
 router.delete('/', authentication, removeUser);
 
