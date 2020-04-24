@@ -38,7 +38,7 @@ jobs:
           version: "286.0.0"
           service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
-          project_id: $PROJECT_ID
+          project_id: ${{ env.PROJECT_ID }}
 
       - name: "Setup GCP Project"
         run: |
