@@ -48,7 +48,7 @@ jobs:
       - name: "Connect to GCE instance"
         run: |
           gcloud compute ssh --zone "${{ env.GCE_INSTANCE_ZONE }}" "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}"
-          gcloud compute scp --zone "${{ env.GCE_INSTANCE_ZONE }}" ${{ github.workspace }} ${{ env.GCE_INSTANCE }}:/usr/webapi/
+          gcloud compute scp --recurse --zone "${{ env.GCE_INSTANCE_ZONE }}" ${{ github.workspace }} ${{ env.GCE_INSTANCE }}:/usr/webapi/
           cd /usr/webapi/
           npm install --production
           npm start
