@@ -2,5 +2,5 @@
 
 cd ~/app/web-api/ 
 npm install --production
-node index.js
+node -r dotenv/config index.js
 EOF

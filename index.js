@@ -1,9 +1,7 @@
 const app = require('./src/app');
 const mongoose = require('mongoose');
 const logger = require('./src/lib/logger');
-const { config } = require('dotenv');
 
-config();
 const port = process.env.PORT;
 const mongoURI = process.env.MONGODB_URI;
 

@@ -46,6 +46,31 @@ jobs:
           NODE_ENV=production
           EOF
 
+      - name: Create service file
+        run: |
+          cat > ./app.service <<EOF
+          [Unit]
+          Description=Carrinho Digital WebAPI
+          After=network.target
+
+          [Service]
+          Environment=PORT=8080
+          Environment=MONGODB_URI=${{ secrets.MONGODB_URI }}
+          Environment=SALT=${{ secrets.SALT }}
+          Environment=SECRET=${{ secrets.SECRET }}
+          Environment=ISSUER=${{ secrets.ISSUER }}
+          Environment=AUDIENCE=${{ secrets.AUDIENCE }}
+          Environment=EXPIRE_IN_MINUTES=240
+          Environment=NODE_ENV=production
+          Type=simple
+          User=ubuntu
+          ExecStart=/usr/bin/node ~/app/webapi/index.js
+          Restart=on-failure
+
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: "286.0.0"
@@ -63,10 +88,19 @@ jobs:
           gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf ~/app/"
           gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir ~/app/"
 
+      - name: "Creating Systemd Configurations"
+        run: |
+          gcloud compute scp --recurse "${{ github.workspace }}/app.service" root@${{ env.GCE_INSTANCE }}:/lib/systemd/system/
+
       - name: "Upload webapi to GCE instance"
         run: |
           gcloud compute scp --recurse "${{ github.workspace }}/" ${{ env.GCE_INSTANCE }}:~/app
 
+      # - name: "Executing App"
+      #   run: |
+      #     gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/web-api/scripts && chmod +x ./start.sh && ./start.sh"
+
       - name: "Executing App"
         run: |
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/web-api/scripts && chmod +x ./start.sh && ./start.sh"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl daemon-reload"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl start app"
