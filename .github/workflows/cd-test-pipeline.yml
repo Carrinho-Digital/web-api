@@ -88,7 +88,7 @@ jobs:
 
       - name: "Creating App Folder"
         run: |
-          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl is-active --quiet app && systemctl stop app"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl is-active app && systemctl stop app"
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /lib/systemd/system/app.service"
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /home/ubuntu/app/"
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir /home/ubuntu/app/"
