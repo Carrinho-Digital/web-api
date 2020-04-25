@@ -36,7 +36,7 @@ jobs:
       - name: Create .env
         run: |
           cat > ./.env <<EOF
-          PORT=80
+          PORT=8080
           MONGODB_URI=${{ secrets.MONGODB_URI }}
           SALT=${{ secrets.SALT }}
           SECRET=${{ secrets.SECRET }}
@@ -54,7 +54,7 @@ jobs:
           After=network.target
 
           [Service]
-          Environment=PORT=80
+          Environment=PORT=8080
           Environment=MONGODB_URI=${{ secrets.MONGODB_URI }}
           Environment=SALT=${{ secrets.SALT }}
           Environment=SECRET=${{ secrets.SECRET }}
