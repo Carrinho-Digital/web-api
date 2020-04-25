@@ -23,4 +23,12 @@ app.get('/hello', (request, response) => {
   });
 });
 
+app.get('/app-info', (request, response) => {
+  return response.json({
+    application: 'Carrinho Digital',
+    version: 'v1.0.0',
+    authors: 'Eclésio Melo, Igor Bueno, Jonathan Lazaro',
+  });
+});
+
 module.exports = app;
