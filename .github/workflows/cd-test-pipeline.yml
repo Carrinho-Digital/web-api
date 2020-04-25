@@ -114,5 +114,5 @@ jobs:
       - name: "Executing App"
         run: |
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl daemon-reload"
-          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl start app"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl restart app"
           gcloud compute instances add-metadata ${{ env.GCE_INSTANCE }} --metadata enable-oslogin=TRUE
