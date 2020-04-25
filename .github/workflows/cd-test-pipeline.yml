@@ -51,6 +51,6 @@ jobs:
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute scp --recurse "${{ github.workspace }}/" ${{ env.GCE_INSTANCE }}:~/app
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production && npm start"
+          gcloud compute scp --recurse "${{ github.workspace }}/" eclesiomelo_1_gmail_com@${{ env.GCE_INSTANCE }}:~/app
+          gcloud compute ssh "eclesiomelo_1_gmail_com@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
+          gcloud compute ssh "eclesiomelo_1_gmail_com@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production && npm start"
