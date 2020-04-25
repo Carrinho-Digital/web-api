@@ -69,4 +69,4 @@ jobs:
 
       - name: "Executing App"
         run: |
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/web-api/scripts && ./start.sh"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/web-api/scripts && chmod +x ./start.sh && ./start.sh"
