@@ -96,6 +96,7 @@ jobs:
       - name: "Upload webapi to GCE instance"
         run: |
           gcloud compute scp --recurse "${{ github.workspace }}/" root@${{ env.GCE_INSTANCE }}:/home/ubuntu/app
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd /home/ubuntu/app/web-api && npm install --production"
 
       # - name: "Executing App"
       #   run: |
