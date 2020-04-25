@@ -21,6 +21,7 @@ on:
 
 env:
   PROJECT_ID: carrinhodigital
+  GCE_USER: eclesiomelo_1_gmail_com@
   GCE_INSTANCE: webapi-instance
   GCE_INSTANCE_ZONE: us-central1-a
 
@@ -47,6 +48,6 @@ jobs:
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute scp --zone="${{ env.GCE_INSTANCE_ZONE }}"  --recurse ${{ github.workspace }} ${{ env.GCE_INSTANCE }}:~/app/
-          gcloud compute ssh --zone "${{ env.GCE_INSTANCE_ZONE }}" "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
-          gcloud compute ssh --zone "${{ env.GCE_INSTANCE_ZONE }}" "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production && npm start"
+          gcloud compute scp --recurse ${{ github.workspace }} ${{ env.GCE_USER }}@${{ env.GCE_INSTANCE }}:~/app/
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production && npm start"
