@@ -51,6 +51,6 @@ jobs:
 
       - name: "Connect to GCE instance"
         run: |
-          gcloud compute scp --recurse .  ${{ env.GCE_INSTANCE }}:~/app
+          gcloud compute scp --recurse ./ ${{ env.GCE_INSTANCE }}:~/app
           gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
           gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production && npm start"
