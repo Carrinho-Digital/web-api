@@ -43,13 +43,14 @@ jobs:
           service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
           project_id: ${{ env.PROJECT_ID }}
+
       - name: "Setup GCP Project"
         run: |
           gcloud config set project ${{ env.PROJECT_ID }}
           gcloud config set compute/zone ${{ env.GCE_INSTANCE_ZONE }}
+
       - name: "Connect to GCE instance"
         run: |
-          ls echo ${{ github.workspace }}
           gcloud compute scp --recurse .  ${{ env.GCE_INSTANCE }}:~/app
           gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
           gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production && npm start"
