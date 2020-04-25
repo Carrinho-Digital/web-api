@@ -64,7 +64,7 @@ jobs:
           Environment=NODE_ENV=production
           Type=simple
           User=ubuntu
-          ExecStart=/usr/bin/node /home/ubuntu/app/webapi/index.js
+          ExecStart=/usr/bin/node /home/ubuntu/app/web-api/index.js
           Restart=on-failure
 
           [Install]
