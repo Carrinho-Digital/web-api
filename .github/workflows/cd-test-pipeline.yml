@@ -64,7 +64,7 @@ jobs:
           Environment=NODE_ENV=production
           Type=simple
           User=ubuntu
-          ExecStart=/usr/bin/node ~/app/webapi/index.js
+          ExecStart=/usr/bin/node /home/ubuntu/app/webapi/index.js
           Restart=on-failure
 
           [Install]
@@ -86,8 +86,8 @@ jobs:
 
       - name: "Creating App Folder"
         run: |
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf ~/app/"
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir ~/app/"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /home/ubuntu/app/"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir /home/ubuntu/app/"
 
       - name: "Creating Systemd Configurations"
         run: |
@@ -95,7 +95,7 @@ jobs:
 
       - name: "Upload webapi to GCE instance"
         run: |
-          gcloud compute scp --recurse "${{ github.workspace }}/" ${{ env.GCE_INSTANCE }}:~/app
+          gcloud compute scp --recurse "${{ github.workspace }}/" root@${{ env.GCE_INSTANCE }}:/home/ubuntu/app
 
       # - name: "Executing App"
       #   run: |
