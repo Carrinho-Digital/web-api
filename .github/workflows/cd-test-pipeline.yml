@@ -33,17 +33,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Create .env
+      - name: Create nginx conf file
         run: |
-          cat > ./.env <<EOF
-          PORT=8080
-          MONGODB_URI=${{ secrets.MONGODB_URI }}
-          SALT=${{ secrets.SALT }}
-          SECRET=${{ secrets.SECRET }}
-          ISSUER=${{ secrets.ISSUER }}
-          AUDIENCE=${{ secrets.AUDIENCE }}
-          EXPIRE_IN_MINUTES=240
-          NODE_ENV=production
+          cat > ./app.conf <<EOF
+          server {
+            listen 80;
+            listen [::]:80;
+
+            server_name api.carrinhodigital.co
+
+            location / {
+              proxy_pass http://localhost:8080/;
+            }
+          }
           EOF
 
       - name: Create service file
@@ -94,6 +96,11 @@ jobs:
       - name: "Creating Systemd Configurations"
         run: |
           gcloud compute scp --recurse "${{ github.workspace }}/app.service" root@${{ env.GCE_INSTANCE }}:/lib/systemd/system
+
+      - name: "Creating Reverse Proxy"
+        run: |
+          gcloud compute scp --recurse "${{ github.workspace }}/app.conf" root@${{ env.GCE_INSTANCE }}:/etc/nginx/conf.d
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "nginx -s reload"
 
       - name: "Upload webapi to GCE instance"
         run: |
