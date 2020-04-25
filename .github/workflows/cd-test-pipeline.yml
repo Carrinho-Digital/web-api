@@ -58,20 +58,18 @@ jobs:
           gcloud config set project ${{ env.PROJECT_ID }}
           gcloud config set compute/zone ${{ env.GCE_INSTANCE_ZONE }}
 
-      - name: "Enable SSH login"
+      - name: "Creating App Folder"
         run: |
-          gcloud compute instances add-metadata ${{ env.GCE_INSTANCE }} --metadata enable-oslogin=TRUE
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /home/ubuntu/app/"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir /home/ubuntu/app/"
 
       - name: "Upload webapi to GCE instance"
         run: |
-          gcloud compute ssh "ubuntu@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf ~/app/"
-          gcloud compute ssh "ubuntu@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir ~/app/"
-          gcloud compute scp --recurse "${{ github.workspace }}/" ubuntu@${{ env.GCE_INSTANCE }}:~/app
-          gcloud compute ssh "ubuntu@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
-          gcloud compute ssh "ubuntu@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production"
-          gcloud compute ssh "ubuntu@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "node -r dotenv/config"
-          gcloud compute ssh "ubuntu@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "node index.js"
+          gcloud compute scp --recurse "${{ github.workspace }}/" ${{ env.GCE_INSTANCE }}:/home/ubuntu/app
 
-      - name: "Disable SSH login"
+      - name: "Executing App"
         run: |
-          gcloud compute instances add-metadata ${{ env.GCE_INSTANCE }} --metadata enable-oslogin=FALSE
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd /home/ubuntu/app/"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "node -r dotenv/config"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "node index.js"
