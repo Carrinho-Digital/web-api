@@ -69,7 +69,4 @@ jobs:
 
       - name: "Executing App"
         run: |
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/"
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "npm install --production"
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "node -r dotenv/config"
-          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "node index.js"
+          gcloud compute ssh "${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "cd ~/app/ && npm install --production && node -r dotenv/config && node index.js"
