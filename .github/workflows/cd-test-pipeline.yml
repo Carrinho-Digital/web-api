@@ -36,14 +36,14 @@ jobs:
       - name: Create .env
         run: |
           cat > ./.env <<EOF
-            PORT=80
-            MONGODB_URI=${{ secrets.MONGODB_URI }}
-            SALT=${{ secrets.SALT }}
-            SECRET=${{ secrets.SECRET }}
-            ISSUER=${{ secrets.ISSUER }}
-            AUDIENCE=${{ secrets.AUDIENCE }}
-            EXPIRE_IN_MINUTES=240
-            NODE_ENV=production
+          PORT=80
+          MONGODB_URI=${{ secrets.MONGODB_URI }}
+          SALT=${{ secrets.SALT }}
+          SECRET=${{ secrets.SECRET }}
+          ISSUER=${{ secrets.ISSUER }}
+          AUDIENCE=${{ secrets.AUDIENCE }}
+          EXPIRE_IN_MINUTES=240
+          NODE_ENV=production
           EOF
 
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
