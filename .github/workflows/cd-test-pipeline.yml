@@ -36,7 +36,7 @@ jobs:
       - name: Create .env
         run: |
           cat > ./.env <<EOF
-          PORT=8080
+          PORT=80
           MONGODB_URI=${{ secrets.MONGODB_URI }}
           SALT=${{ secrets.SALT }}
           SECRET=${{ secrets.SECRET }}
@@ -86,6 +86,8 @@ jobs:
 
       - name: "Creating App Folder"
         run: |
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "systemctl stop app"
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /lib/systemd/system/app.service"
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /home/ubuntu/app/"
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir /home/ubuntu/app/"
 
