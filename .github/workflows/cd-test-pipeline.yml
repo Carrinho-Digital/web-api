@@ -30,11 +30,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
       - name: Test
         run: |
           ls ${{ github.workspace }}
-      # - name: Checkout
-      #   uses: actions/checkout@v1
       # - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       #   with:
       #     version: "286.0.0"
