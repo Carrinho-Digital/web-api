@@ -100,6 +100,7 @@ jobs:
       - name: "Creating Reverse Proxy"
         run: |
           gcloud compute scp --recurse "${{ github.workspace }}/app.conf" root@${{ env.GCE_INSTANCE }}:/etc/nginx/conf.d
+          gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "rm -rf /etc/nginx/conf.d/default.conf"
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "nginx -s reload"
 
       - name: "Upload webapi to GCE instance"
