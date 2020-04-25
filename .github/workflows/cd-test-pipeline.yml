@@ -54,7 +54,7 @@ jobs:
           After=network.target
 
           [Service]
-          Environment=PORT=8080
+          Environment=PORT=80
           Environment=MONGODB_URI=${{ secrets.MONGODB_URI }}
           Environment=SALT=${{ secrets.SALT }}
           Environment=SECRET=${{ secrets.SECRET }}
