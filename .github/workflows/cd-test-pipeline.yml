@@ -42,7 +42,7 @@ jobs:
 
             server_name api.carrinhodigital.co;
 
-            return 301 https://$server_name$request_uri;            
+            return 301 https://$host$request_uri;      
           }
 
           server {
@@ -53,7 +53,8 @@ jobs:
 
             ssl_certificate /etc/ssl/carrinhodigital_csr.pem; 
             ssl_certificate_key /etc/ssl/carrinhodigital_key.pem;
-            ssl_trusted_certificate /etc/ssl/carrinhodigital_chain.pem;
+
+            ssl_dhparam /etc/ssl/ssl-dhparams.pem;
 
             include /etc/ssl/carrinhodigital_ssl_options.conf;
 
@@ -73,11 +74,11 @@ jobs:
           ${{ secrets.SSL_KEY }}
           EOF
 
-          cat > ./carrinhodigital_chain.pem <<EOF
-          ${{ secrets.SSL_CHAIN }}
+          cat > ./carrinhodigital_ssl_options.conf <<EOF
+          ${{ secrets.SSL_DHPARAMS }}
           EOF
 
-          cat > ./carrinhodigital_ssl_options.conf <<EOF
+          cat > ./ssl-dhparams.pem <<EOF
           ${{ secrets.SSL_OPTIONS }}
           EOF
 
@@ -135,8 +136,8 @@ jobs:
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir /etc/ssl/"
           gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_csr.pem" root@${{ env.GCE_INSTANCE }}:/etc/ssl/        
           gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_key.pem" root@${{ env.GCE_INSTANCE }}:/etc/ssl/
-          gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_chain.pem" root@${{ env.GCE_INSTANCE }}:/etc/ssl/
           gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_ssl_options.conf" root@${{ env.GCE_INSTANCE }}:/etc/ssl/
+          gcloud compute scp --recurse "${{ github.workspace }}/ssl-dhparams.pem" root@${{ env.GCE_INSTANCE }}:/etc/ssl/
 
       - name: "Creating Reverse Proxy"
         run: |
