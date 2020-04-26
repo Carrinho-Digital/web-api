@@ -40,6 +40,12 @@ jobs:
             listen 80;
             listen [::]:80;
 
+            server_name api.carrinhodigital.co;
+
+            return 301 https://$server_name$request_uri;            
+          }
+
+          server {
             listen 433 ssl;
             listen [::]:433 ssl;
 
@@ -49,10 +55,6 @@ jobs:
             ssl_certificate_key /etc/ssl/carrinhodigital_key.pem;
 
             include /etc/ssl/carrinhodigital_ssl_options.conf;
-
-            if ($scheme != "https") {
-              return 301 https://$host$request_uri;
-            }
 
             location / {
               proxy_pass http://localhost:8080/;
