@@ -37,32 +37,14 @@ jobs:
         run: |
           cat > ./app.conf <<EOF
           server {
-            listen 80 http2;
-            listen [::]:80 http2;
+            listen 80;
+            listen [::]:80;
 
             server_name api.carrinhodigital.co;
 
             location / {
               proxy_pass http://localhost:8080/;
             }    
-          }
-
-          server {
-            listen 433 ssl;
-            listen [::]:433 ssl;
-
-            server_name api.carrinhodigital.co;
-
-            ssl_certificate /etc/ssl/carrinhodigital_csr.pem; 
-            ssl_certificate_key /etc/ssl/carrinhodigital_key.pem;
-
-            ssl_dhparam /etc/ssl/ssl-dhparams.pem;
-
-            include /etc/ssl/carrinhodigital_ssl_options.conf;
-
-            location / {
-              proxy_pass http://localhost:8080/;
-            }
           }
           EOF
 
