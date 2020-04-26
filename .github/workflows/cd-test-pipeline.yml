@@ -75,11 +75,11 @@ jobs:
           EOF
 
           cat > ./carrinhodigital_ssl_options.conf <<EOF
-          ${{ secrets.SSL_DHPARAMS }}
+          ${{ secrets.SSL_OPTIONS }}
           EOF
 
           cat > ./ssl-dhparams.pem <<EOF
-          ${{ secrets.SSL_OPTIONS }}
+          ${{ secrets.SSL_DHPARAMS }}
           EOF
 
       - name: Create service file
