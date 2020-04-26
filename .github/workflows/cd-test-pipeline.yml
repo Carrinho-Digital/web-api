@@ -40,13 +40,19 @@ jobs:
             listen 80;
             listen [::]:80;
 
-            listen 433;
-            listen [::]:433;
+            listen 433 ssl;
+            listen [::]:433 ssl;
 
             server_name api.carrinhodigital.co;
 
             ssl_certificate /etc/ssl/carrinhodigital_csr.pem; 
             ssl_certificate_key /etc/ssl/carrinhodigital_key.pem;
+
+            include /etc/ssl/carrinhodigital_ssl_options.conf;
+
+            if ($scheme != "https") {
+              return 301 https://$host$request_uri;
+            }
 
             location / {
               proxy_pass http://localhost:8080/;
@@ -62,6 +68,10 @@ jobs:
 
           cat > ./carrinhodigital_key.pem <<EOF
           ${{ secrets.SSL_KEY }}
+          EOF
+
+          cat > ./carrinhodigital_ssl_options.conf <<EOF
+          ${{ secrets.SSL_OPTIONS }}
           EOF
 
       - name: Create service file
@@ -118,6 +128,7 @@ jobs:
           gcloud compute ssh "root@${{ env.GCE_INSTANCE }}" --project "${{ env.PROJECT_ID }}" --command "mkdir /etc/ssl/"
           gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_csr.pem" root@${{ env.GCE_INSTANCE }}:/etc/ssl/        
           gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_key.pem" root@${{ env.GCE_INSTANCE }}:/etc/ssl/
+          gcloud compute scp --recurse "${{ github.workspace }}/carrinhodigital_ssl_options.conf" root@${{ env.GCE_INSTANCE }}:/etc/ssl/
 
       - name: "Creating Reverse Proxy"
         run: |
