@@ -37,12 +37,14 @@ jobs:
         run: |
           cat > ./app.conf <<EOF
           server {
-            listen 80;
-            listen [::]:80;
+            listen 80 http2;
+            listen [::]:80 http2;
 
             server_name api.carrinhodigital.co;
 
-            return 301 https://$host$request_uri;      
+            location / {
+              proxy_pass http://localhost:8080/;
+            }    
           }
 
           server {
@@ -96,7 +98,7 @@ jobs:
           Environment=SECRET=${{ secrets.SECRET }}
           Environment=ISSUER=${{ secrets.ISSUER }}
           Environment=AUDIENCE=${{ secrets.AUDIENCE }}
-          Environment=EXPIRE_IN_MINUTES=240
+          Environment=EXPIRE_IN_MINUTES=240host
           Environment=NODE_ENV=production
           Type=simple
           User=ubuntu
