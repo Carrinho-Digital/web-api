@@ -95,7 +95,7 @@ jobs:
           Environment=SECRET=${{ secrets.SECRET }}
           Environment=ISSUER=${{ secrets.ISSUER }}
           Environment=AUDIENCE=${{ secrets.AUDIENCE }}
-          Environment=EXPIRE_IN_MINUTES=240host
+          Environment=EXPIRE_IN_MINUTES=240
           Environment=NODE_ENV=production
           Type=simple
           User=ubuntu
