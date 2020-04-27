@@ -3,6 +3,7 @@ const { authentication, only } = require('../../../middleware');
 
 const getProducts = require('./getProducts');
 const getProduct = require('./getProductById');
+const getFullProduct = require('./getFullProductById');
 const getProductsByMarket = require('./getProductsByMarket');
 const saveProduct = require('./saveProduct');
 const updateProduct = require('./updateProduct');
@@ -16,6 +17,7 @@ router.get(
 );
 
 router.get('/:productId', authentication, getProduct);
+router.get('/market/:productId', authentication, only('MARKET_USER'), getFullProduct);
 
 router.get(
   '/market/:marketId',
