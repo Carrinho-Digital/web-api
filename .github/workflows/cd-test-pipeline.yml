@@ -42,9 +42,7 @@ jobs:
 
             server_name api.carrinhodigital.co;
 
-            location / {
-              proxy_pass http://localhost:8080/;
-            }    
+            return 301 https://api.carrinhodigital.co$request_uri; 
           }
 
           server {
