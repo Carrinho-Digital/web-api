@@ -13,7 +13,9 @@ const buildRemoveProduct = require('./removeProduct');
 const buildBelowsToMarket = require('./belowsToMarket');
 const buildProductHasQuantity = require('./productHasQuantity');
 const buildGetProductById = require('./getProductById');
+const buildInactiveOrActiveProduct = require('./inactiveOrActiveProduct');
 
+const inactiveOrActiveProduct = buildInactiveOrActiveProduct();
 const getAllProducts = buildGetAllProducts(paginate);
 const getProductsByMarket = buildGetProductsByMarket({
   paginate,
@@ -37,4 +39,5 @@ module.exports = {
   getProduct,
   getProductsByMarket,
   productHasQuantity,
+  inactiveOrActiveProduct,
 };
