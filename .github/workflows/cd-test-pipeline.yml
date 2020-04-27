@@ -53,11 +53,11 @@ jobs:
 
             server_name api.carrinhodigital.co;
 
-            ssl on
-            ssl_certificate /etc/ssl/carrinhodigital_csr.pem
-            ssl_certificate_key /etc/ssl/carrinhodigital_key.pem
+            ssl on;
+            ssl_certificate /etc/ssl/carrinhodigital_csr.pem;
+            ssl_certificate_key /etc/ssl/carrinhodigital_key.pem;
 
-            include /etc/ssl/carrinhodigital_ssl_options.conf
+            include /etc/ssl/carrinhodigital_ssl_options.conf;
 
             location / {
               proxy_pass http://localhost:8080/;
