@@ -7,6 +7,7 @@ const getFullProduct = require('./getFullProductById');
 const getProductsByMarket = require('./getProductsByMarket');
 const saveProduct = require('./saveProduct');
 const updateProduct = require('./updateProduct');
+const inactiveOrActiveProduct = require('./inactiveOrActiveProduct');
 const removeProduct = require('./removeProduct');
 
 router.get(
@@ -29,6 +30,12 @@ router.get(
 router.post('/', authentication, saveProduct);
 
 router.put('/:productId', authentication, updateProduct);
+
+router.patch(
+  '/inactive/:productId',
+  authentication,
+  only('MARKET_USER'),
+  inactiveOrActiveProduct);
 
 router.delete('/:productId', authentication, removeProduct);
 
