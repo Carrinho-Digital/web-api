@@ -8,10 +8,8 @@ async function getProductById(request, response) {
   const searchParams = {
     fields: '-isDeleted',
     query: {
-      $or: [
-        { isDeleted: false }
-      ],
-    },
+      isDeleted: false
+    }
   };
 
   try {
