@@ -4,13 +4,13 @@ const {
 
 async function getProductById(request, response) {
   const productId = request.params.productId;
-  const marketId = request.user._id;
+  const market = request.user._id;
 
   const searchParams = {
     fields: '-isDeleted',
     query: {
       isDeleted: false,
-      marketId
+      market
     }
   };
 
