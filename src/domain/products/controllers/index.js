@@ -18,7 +18,12 @@ router.get(
 );
 
 router.get('/:productId', authentication, getProduct);
-router.get('/market/:productId', authentication, only('MARKET_USER'), getFullProduct);
+router.get(
+  '/market/:productId',
+  authentication,
+  only('MARKET_USER'),
+  getFullProduct,
+);
 
 router.get(
   '/market/:marketId',

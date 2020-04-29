@@ -19,6 +19,13 @@ const buildUpsertPaymentMethod = require('./upsertPaymentMethod');
 const buildGetPaymentMethods = require('./getPaymentMethods');
 const buildDeletePaymentMethod = require('./deletePaymentMethod');
 
+const buildUpsertDeliveryAvailability =
+  require('./upsertDeliveryAvailability');
+const buildGetDeliveryAvailabilities =
+  require('./getDeliveryAvailabilities');
+const buildDeleteDeliveryAvalability =
+  require('./deleteDeliveryAvailability');
+
 const categories = buildCategories();
 const getAllMarkets = buildGetAllMarkets(paginate);
 const marketExists = buildMarketExists();
@@ -28,6 +35,16 @@ const upsertDeliveryRule = buildUpsertDeliveryRule();
 const getDeliveryRules = buildGetDeliveryRules();
 const deleteDeliveryRule = buildDeleteDeliveryRule();
 const getMarketTags = buildGetMarketTags();
+
+const deleteDeliveryAvalability = buildDeleteDeliveryAvalability({
+  getUserById,
+});
+const upsertDeliveryAvailability = buildUpsertDeliveryAvailability({
+  getUserById,
+});
+const getDeliveryAvailabilities = buildGetDeliveryAvailabilities({
+  getUserById,
+});
 
 const getPaymentMethods = buildGetPaymentMethods({
   getUserById,
@@ -52,4 +69,7 @@ module.exports = {
   deletePaymentMethod,
   categories,
   getMarketTags,
+  upsertDeliveryAvailability,
+  getDeliveryAvailabilities,
+  deleteDeliveryAvalability,
 };

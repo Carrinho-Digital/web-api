@@ -10,8 +10,8 @@ async function getProductById(request, response) {
     fields: '-isDeleted',
     query: {
       isDeleted: false,
-      market
-    }
+      market,
+    },
   };
 
   try {
