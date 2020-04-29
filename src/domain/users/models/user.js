@@ -43,6 +43,16 @@ const authorizedTypes = [
   'CUSTOMER_USER',
 ];
 
+const daysOfWeek = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];
+
 const availablePaymentsMethods = [
   'VISA_CREDITO',
   'VISA_DEBITO',
@@ -137,6 +147,23 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  deliveryAvailabilities: [
+    {
+      dayOfWeek: {
+        type: String,
+      },
+      availabilities: [
+        {
+          from: {
+            type: Date,
+          },
+          to: {
+            type: Date,
+          },
+        },
+      ],
+    },
+  ],
 }, {
   toJSON: {
     transform: function(document, ret) {
@@ -147,6 +174,10 @@ const userSchema = new mongoose.Schema({
 
 userSchema.statics.isValidPaymentMethod = function(payment) {
   return availablePaymentsMethods.includes(payment);
+};
+
+userSchema.statics.isValidDayOfWeek = function(dayOfWeek = '') {
+  return daysOfWeek.includes(dayOfWeek.toLowerCase());
 };
 
 userSchema.statics.getCategories = function() {
