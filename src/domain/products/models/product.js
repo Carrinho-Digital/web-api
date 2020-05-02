@@ -14,7 +14,6 @@ const validUnits = [
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   isDeleted: {
     type: Boolean,
@@ -36,6 +35,7 @@ const productSchema = new mongoose.Schema({
   },
   sku: String,
   sellPrice: Number,
+  images: [String],
   buyPrice: {
     type: Number,
     default: 0,
