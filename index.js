@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 const app = require('./src/app');
+const mongoose = require('mongoose');
 const logger = require('./src/lib/logger');
 
 const port = process.env.PORT;

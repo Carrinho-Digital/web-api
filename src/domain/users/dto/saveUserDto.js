@@ -6,7 +6,8 @@ const saveUserDto = Joi.object({
   confirm_password: Joi.ref('password'),
   email: Joi.string().email().required(),
   document: Joi.string().required(),
-  type: Joi.string().required(),
+  category: Joi.number(),
+  birthDate: Joi.date(),
   phones: Joi.array().items(Joi.string()).required(),
 }).with('password', 'confirm_password');
 

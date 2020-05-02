@@ -4,7 +4,7 @@ const {
 
 const {
   marketExists,
-} = require('../../market/useCases');
+} = require('../../markets/useCases');
 
 const {
   belowsToMarket,

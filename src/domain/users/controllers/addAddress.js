@@ -7,6 +7,7 @@ const {
 async function addAddress(request, response) {
   const body = request.body;
   const userId = request.user._id;
+  const isMarket = request.user.isMarket;
 
   const saveAddressBody = saveAddressDto.validate(body);
 
@@ -19,6 +20,7 @@ async function addAddress(request, response) {
       null,
       saveAddressBody.value,
       userId,
+      isMarket,
     );
 
     return response.status(201).json({

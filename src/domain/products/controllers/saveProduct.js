@@ -26,10 +26,10 @@ async function saveProduct(request, response) {
   }
 
   try {
-    const saveProductResponse = await saveProductUseCase({
-      ...saveProductBody.value,
-      market: request.user._id,
-    });
+    const saveProductResponse = await saveProductUseCase(
+      request.user._id,
+      saveProductBody.value,
+    );
 
     return response.status(201).json({
       message: 'PRODUCT_SAVED',

@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../../users/models/user');
 
 function buildGetAllMarkets(paginate) {
   const MARKET_TYPE = 'MARKET_USER';
@@ -13,7 +13,7 @@ function buildGetAllMarkets(paginate) {
 
     const markets = await User.find(
       marketQuery,
-      'name email document phones addresses online',
+      'name email document phones addresses online category',
       {
         skip: searchParams.limit * searchParams.page,
         limit: searchParams.limit,

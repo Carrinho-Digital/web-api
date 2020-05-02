@@ -4,7 +4,8 @@ const updateUserDto = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   document: Joi.string().required(),
-  type: Joi.string().required(),
+  category: Joi.number(),
+  birthDate: Joi.date(),
   phones: Joi.array().items(Joi.string()).required(),
 });
 

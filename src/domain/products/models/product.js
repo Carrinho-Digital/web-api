@@ -14,7 +14,6 @@ const validUnits = [
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   isDeleted: {
     type: Boolean,
@@ -36,27 +35,12 @@ const productSchema = new mongoose.Schema({
   },
   sku: String,
   sellPrice: Number,
+  images: [String],
   buyPrice: {
     type: Number,
     default: 0,
   },
   market: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  promotions: [
-    {
-      startDate: {
-        type: Date,
-      },
-      endDate: {
-        type: Date,
-      },
-      discountInPercent: {
-        type: Number,
-      },
-      discountInPrice: {
-        type: Number,
-      },
-    },
-  ],
 },
 {
   timestamps: true,
@@ -64,18 +48,6 @@ const productSchema = new mongoose.Schema({
 
 productSchema.statics.isValidUnit = function(unit = '') {
   return validUnits.includes(unit.toLowerCase());
-};
-
-productSchema.statics.findAllMarketProducts = function(
-  marketId, query, searchParams) {
-  return this.find(
-    {
-      ...query,
-      market: marketId,
-    },
-    null,
-    searchParams,
-  );
 };
 
 module.exports.Product = mongoose.model('Product', productSchema);
