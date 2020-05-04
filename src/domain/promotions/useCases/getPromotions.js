@@ -22,7 +22,7 @@ function buildGetPromotions({
         skip: searchParams.limit * searchParams.page,
         limit: searchParams.limit,
       },
-    );
+    ).populate('product', '_id name');
 
     return paginate(
       promotions,
