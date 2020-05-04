@@ -23,6 +23,14 @@ router.get(
 );
 
 router.get('/:productId', authentication, getProduct);
+
+router.get(
+  '/cli/market/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
+  getProductsByMarket,
+);
+
 router.get(
   '/market/:productId',
   authentication,
@@ -30,12 +38,6 @@ router.get(
   getFullProduct,
 );
 
-router.get(
-  '/market/:marketId',
-  authentication,
-  only('CUSTOMER_USER'),
-  getProductsByMarket,
-);
 
 router.post('/', authentication, saveProduct);
 router.post(

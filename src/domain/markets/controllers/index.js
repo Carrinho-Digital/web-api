@@ -16,7 +16,7 @@ const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
 const getCurrentMarketTags = require('./getCurrentMarketTags');
 const getDeliveryAvailabilities = require('./getDeliveryAvailabilities');
-const upsertAvailability = require('./upsertAvailability');
+const upsertAvailability = require('./upsertDeliveryAvailability');
 const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
 
 const categories = require('./categories');

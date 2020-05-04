@@ -24,7 +24,7 @@ async function delivery(request, response) {
     });
   }
 
-  if (!deliveryAddress) {
+  if (deliveryMethod === 'delivery' && !deliveryAddress) {
     return response.status(400).json({
       success: false,
       message: 'ADDRESS_INVALID',

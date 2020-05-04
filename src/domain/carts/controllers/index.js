@@ -4,6 +4,7 @@ const { authentication, only } = require('../../../middleware');
 const delivery = require('./delivery');
 const checkout = require('./checkout');
 const payments = require('./payments');
+const availability = require('./availability');
 const getCurrentCartByMarket = require('./getCurrentCartByMarket');
 const addProductsOnMarketCart = require('./addProductsOnMarketCart');
 
@@ -19,6 +20,13 @@ router.patch(
   authentication,
   only('CUSTOMER_USER'),
   payments,
+);
+
+router.patch(
+  '/availability/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
+  availability,
 );
 
 router.post(

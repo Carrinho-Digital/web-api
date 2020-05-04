@@ -4,6 +4,7 @@ const {
 
 const {
   marketExists,
+  getDeliveryAvailabilities,
 } = require('../../markets/useCases');
 
 const {
@@ -13,6 +14,7 @@ const {
 
 const buildDelivery = require('./delivery');
 const buildCheckout = require('./checkout');
+const buildAvailability = require('./availability');
 const buildGetCartByMarket = require('./getCurrentCartByMarket');
 const buildAddProductsOnMarketCart = require('./addProductsOnMarketCart');
 
@@ -31,10 +33,15 @@ const delivery = buildDelivery({
 const checkout = buildCheckout({
   getCurrentCartByMarket,
 });
+const availability = buildAvailability({
+  getCurrentCartByMarket,
+  getDeliveryAvailabilities,
+});
 
 module.exports = {
   delivery,
   checkout,
+  availability,
   getCurrentCartByMarket,
   addProductsOnMarketCart,
 };

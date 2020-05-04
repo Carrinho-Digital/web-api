@@ -56,7 +56,7 @@ function buildUpsertDeliveryAvailability({
 
       marketUser.deliveryAvailabilities.push({
         dayOfWeek,
-        normalizedAvailabilities,
+        availabilities: normalizedAvailabilities,
       });
 
       return marketUser.save();

@@ -33,6 +33,11 @@ const cartSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
     },
   },
+  availability: {
+    dayOfWeek: String,
+    from: Date,
+    to: Date,
+  },
 }, {
   toJSON: { virtuals: true },
 });
