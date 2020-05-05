@@ -48,6 +48,13 @@ router.get(
 );
 
 router.get(
+  '/payments/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
+  getPaymentMethods,
+);
+
+router.get(
   '/tags',
   authentication,
   only('MARKET_USER'),

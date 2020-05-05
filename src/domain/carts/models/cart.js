@@ -38,6 +38,14 @@ const cartSchema = new mongoose.Schema({
     from: Date,
     to: Date,
   },
+  payment: {
+    method: {
+      type: String,
+      required: true,
+    },
+    exchange: Number,
+    document: String,
+  },
 }, {
   toJSON: { virtuals: true },
 });

@@ -23,10 +23,10 @@ function buildUpsertPaymentMethod({
       throw new GeneralException('Payment method is not valid', 422);
     }
 
-    if (!paymentMethodId) {
-      const marketUser = await getUserById(marketId);
+    const marketUser = await getUserById(marketId);
+    const paymentMethods = [...marketUser.paymentMethods];
 
-      const paymentMethods = [...marketUser.paymentMethods];
+    if (!paymentMethodId) {
       const paymentMethodAlreadyExists = paymentMethods
         .some(paymentMethod => paymentMethod.method === payment.method);
 
@@ -38,11 +38,21 @@ function buildUpsertPaymentMethod({
 
       await marketUser.save();
     } else {
+      const paymentMethodAlreadyExists = paymentMethods
+        .some(paymentMethod =>
+          paymentMethod.method === payment.method &&
+          paymentMethod._id.toString() !== paymentMethodId.toString());
+
+      if (paymentMethodAlreadyExists) {
+        throw new GeneralException('Payment method already exists', 422);
+      }
+
       const updatedPaymentValue = await User.findOneAndUpdate(
         { '_id': marketId, 'paymentMethods._id': paymentMethodId },
         {
           '$set': {
             'paymentMethods.$.active': payment.active,
+            'paymentMethods.$.method': payment.method,
             'paymentMethods.$._id': paymentMethodId,
           },
         },

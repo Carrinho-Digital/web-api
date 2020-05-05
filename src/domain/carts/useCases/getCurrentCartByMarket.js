@@ -21,15 +21,13 @@ function buildGetCurrentCartByMarket({
       closed: false,
     });
 
-    let total = 0;
-
-    if (cart) {
-      total = await cart.total();
+    if (!cart) {
+      throw new NotFoundException('Cannot found cart for this market');
     }
 
     return {
       cart,
-      total,
+      total: await cart.total(),
     };
   };
 }

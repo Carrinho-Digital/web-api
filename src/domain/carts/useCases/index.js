@@ -4,6 +4,7 @@ const {
 
 const {
   marketExists,
+  getPaymentMethods,
   getDeliveryAvailabilities,
 } = require('../../markets/useCases');
 
@@ -15,6 +16,7 @@ const {
 const buildDelivery = require('./delivery');
 const buildCheckout = require('./checkout');
 const buildAvailability = require('./availability');
+const buildSavePaymentOnCart = require('./savePaymentOnCart');
 const buildGetCartByMarket = require('./getCurrentCartByMarket');
 const buildAddProductsOnMarketCart = require('./addProductsOnMarketCart');
 
@@ -37,11 +39,16 @@ const availability = buildAvailability({
   getCurrentCartByMarket,
   getDeliveryAvailabilities,
 });
+const savePaymentOnCart = buildSavePaymentOnCart({
+  getPaymentMethods,
+  getCurrentCartByMarket,
+});
 
 module.exports = {
   delivery,
   checkout,
   availability,
+  savePaymentOnCart,
   getCurrentCartByMarket,
   addProductsOnMarketCart,
 };

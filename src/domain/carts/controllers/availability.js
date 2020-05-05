@@ -13,7 +13,7 @@ async function deliveryAvailbaility(request, response) {
       errors: [
         'Market availability and availability time are required',
       ],
-      message: 'CANNOT_SAVE_AVAILABILITY',
+      message: 'CANNOT_SAVE_AVAILABILITY_ON_CART',
     });
   }
 
@@ -38,7 +38,7 @@ async function deliveryAvailbaility(request, response) {
       errors: [
         exception.message,
       ],
-      message: 'CANNOT_SAVE_AVAILABILITY',
+      message: 'CANNOT_SAVE_AVAILABILITY_ON_CART',
     });
   }
 }
