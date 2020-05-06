@@ -21,7 +21,14 @@ function buildGetCurrentCartByMarket({
       closed: false,
     });
 
-    return cart;
+    if (!cart) {
+      throw new NotFoundException('Cannot found cart for this market');
+    }
+
+    return {
+      cart,
+      total: await cart.total(),
+    };
   };
 }
 

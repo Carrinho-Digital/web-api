@@ -41,6 +41,9 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   market: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+},
+{
+  timestamps: true,
 });
 
 productSchema.statics.isValidUnit = function(unit = '') {

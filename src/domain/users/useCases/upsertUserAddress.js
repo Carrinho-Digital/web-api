@@ -17,7 +17,7 @@ function buildUpsertUserAddress() {
         { '_id': userId, 'addresses._id': addressId },
         {
           '$set': {
-            'addresses.$': addressValues,
+            'addresses.$': {...addressValues, _id: addressId },
           },
         },
       );
