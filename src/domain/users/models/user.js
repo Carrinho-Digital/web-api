@@ -79,7 +79,6 @@ const userSchema = new mongoose.Schema({
   },
   document: {
     type: String,
-    required: true,
     unique: true,
   },
   password: String,
@@ -104,6 +103,13 @@ const userSchema = new mongoose.Schema({
   },
   category: {
     type: Number,
+  },
+  facebook: {
+    type: {
+      id: String,
+      token: String,
+    },
+    select: false,
   },
   addresses: [
     {
