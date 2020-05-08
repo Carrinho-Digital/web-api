@@ -10,7 +10,8 @@ module.exports = () => {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       profileFields: [
-        'id', 'displayName', 'name', 'gender', 'link', 'photos', 'emails'],
+        'id', 'displayName',
+        'birthday', 'name', 'gender', 'link', 'photos', 'email'],
     },
     function(accessToken, refreshToken, profile, done) {
       facebookLogin(accessToken, refreshToken, profile)

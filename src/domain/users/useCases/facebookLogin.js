@@ -18,9 +18,17 @@ function buildFacebookLogin({ jwt }) {
       const name = profile.displayName;
       const userEmail = profile.emails[0].value;
 
+      const photo = profile.photos.length > 0 ?
+        profile.photos[0].value : null;
+
+      const birthday = profile._json.birthday ?
+        new Date( profile._json.birthday) : null;
+
       const newUser = {
         name,
+        photo,
         email: userEmail,
+        birthDate: birthday,
         createdAt: new Date,
         updatedAt: new Date,
         type: 'CUSTOMER_USER',

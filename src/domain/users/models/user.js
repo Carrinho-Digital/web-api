@@ -77,6 +77,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
+  photo: String,
   document: {
     type: String,
     unique: true,
