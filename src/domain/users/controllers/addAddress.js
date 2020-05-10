@@ -16,7 +16,7 @@ async function addAddress(request, response) {
   }
 
   try {
-    await upsertUserAddress(
+    const newAddress = await upsertUserAddress(
       null,
       saveAddressBody.value,
       userId,
@@ -26,6 +26,7 @@ async function addAddress(request, response) {
     return response.status(201).json({
       message: 'ADDRESS_ADDED',
       success: true,
+      data: newAddress,
     });
   } catch (exception) {
     return response.status(exception.status || 500).json({
