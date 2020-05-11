@@ -5,6 +5,8 @@ function buildGetAllMarkets(paginate) {
 
   return async function getAllMarkets(
     searchParams = { limit: 10, page: 0, query: {} },
+    latitude,
+    longitude,
   ) {
     const marketQuery = {
       ...searchParams.query,
