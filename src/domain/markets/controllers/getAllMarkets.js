@@ -15,9 +15,13 @@ async function getAllMarkets(request, response) {
 
   function isFavorite(market) {
     return {
-      ...market.toObject(),
+      ...market,
       isFavorite: favorites.includes(market._id),
     };
+  }
+
+  function sortByDistance(firstMarket, secondMarket) {
+    return firstMarket.distance > secondMarket.distance;
   }
 
   if (!customerAddressId) {
@@ -37,7 +41,7 @@ async function getAllMarkets(request, response) {
     );
 
     const markets = await getAllMarketsUseCase(searchParams, customerAddress);
-    markets.data = markets.data.map(isFavorite);
+    markets.data = markets.data.map(isFavorite).sort(sortByDistance);
 
     return response.status(200).json(markets);
   } catch (exception) {
