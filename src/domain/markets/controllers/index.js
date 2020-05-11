@@ -21,7 +21,7 @@ const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
 
 const categories = require('./categories');
 
-router.get('/',
+router.get('/:customerAddressId',
   authentication,
   only('CUSTOMER_USER'),
   getAllMarkets,

@@ -4,22 +4,14 @@ const {
   getAllMarkets: getAllMarketsUseCase,
 } = require('../useCases');
 
+const {
+  getAddressById: getAddressByIdUseCase,
+} = require('../../users/useCases');
+
 async function getAllMarkets(request, response) {
   const favorites = request.user.favorites || [];
   const searchParams = getSearchParams(request);
-
-  const latitude = request.query.latitude || null;
-  const longitude = request.query.longitude || null;
-
-  if (!latitude || !longitude) {
-    return response.status(400).json({
-      errors: [
-        'latitude and longitude are required',
-      ],
-      message: 'CANNOT_RETRIVE_MARKETS',
-      success: false,
-    });
-  }
+  const customerAddressId = request.params.customerAddressId || null;
 
   function isFavorite(market) {
     return {
@@ -28,9 +20,23 @@ async function getAllMarkets(request, response) {
     };
   }
 
+  if (!customerAddressId) {
+    return response.status(400).json({
+      errors: [
+        'customer address id is required',
+      ],
+      message: 'CANNOT_RETRIVE_MARKETS',
+      success: false,
+    });
+  }
 
   try {
-    const markets = await getAllMarketsUseCase(searchParams);
+    const customerAddress = await getAddressByIdUseCase(
+      customerAddressId,
+      request.user._id,
+    );
+
+    const markets = await getAllMarketsUseCase(searchParams, customerAddress);
     markets.data = markets.data.map(isFavorite);
 
     return response.status(200).json(markets);

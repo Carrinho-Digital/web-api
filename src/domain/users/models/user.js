@@ -79,6 +79,9 @@ const authorizedLocations = [
           {
             city: 'Vilhena',
           },
+          {
+            city: 'Colorado',
+          },
         ],
       },
     ],

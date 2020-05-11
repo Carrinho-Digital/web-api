@@ -5,12 +5,15 @@ function buildGetAllMarkets(paginate) {
 
   return async function getAllMarkets(
     searchParams = { limit: 10, page: 0, query: {} },
-    latitude,
-    longitude,
+    userAddress,
   ) {
     const marketQuery = {
       ...searchParams.query,
-      type: MARKET_TYPE,
+      'type': MARKET_TYPE,
+      'isDeleted': false,
+      'addresses.city': userAddress.city,
+      'addresses.state': userAddress.state,
+      'addresses.country': userAddress.country,
     };
 
     const markets = await User.find(
