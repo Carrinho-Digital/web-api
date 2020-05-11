@@ -12,6 +12,7 @@ const updateAddress = require('./updateAddress');
 const removeAddress = require('./removeAddress');
 const getAddresses = require('./getAddresses');
 const getCurrentUser = require('./getCurrentUser');
+const getValidLocations = require('./getValidLocations');
 
 router.post('/market', createMarketUser);
 router.post('/customer', createCustomerUser);
@@ -25,5 +26,7 @@ router.put('/addresses/:addressId', authentication, updateAddress);
 router.delete('/addresses/:addressId', authentication, removeAddress);
 
 router.get('/current', authentication, getCurrentUser);
+
+router.get('/locations', authentication, getValidLocations);
 
 module.exports = router;

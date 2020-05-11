@@ -204,6 +204,10 @@ userSchema.statics.getCategories = function() {
   return [...marketCategories];
 };
 
+userSchema.statics.getAuthorizedLocations = function() {
+  return [...authorizedLocations];
+};
+
 userSchema.statics.getMarketCategory = function(categoryId) {
   const marketCategory = marketCategories
     .find(marketCategory => marketCategory.categoryId === categoryId);
