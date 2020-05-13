@@ -25,7 +25,7 @@ router.get(
 router.get('/:productId', authentication, getProduct);
 
 router.get(
-  '/cli/market/:marketId',
+  '/customer/market/:marketId',
   authentication,
   only('CUSTOMER_USER'),
   getProductsByMarket,
