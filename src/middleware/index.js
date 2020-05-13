@@ -1,7 +1,9 @@
-const authentication = require('./authentication');
 const only = require('./only');
+const passport = require('./passport');
+const authentication = require('./authentication');
 
 module.exports = {
-  authentication,
   only,
+  passport,
+  authentication,
 };

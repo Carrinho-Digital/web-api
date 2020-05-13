@@ -27,6 +27,8 @@ services:
       - AUDIENCE=MercadoOnlineAudience
       - EXPIRE_IN_MINUTES=240
       - NODE_ENV=development
+      - BUCKET_NAME=carrinho_digital_stg
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/carrinhodigital.json
 
 networks:
   dnet:
