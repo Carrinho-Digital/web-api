@@ -69,6 +69,26 @@ const availablePaymentsMethods = [
   'DINHEIRO',
 ];
 
+const authorizedLocations = [
+  {
+    country: 'Brazil',
+    states: [
+      {
+        state: 'RO',
+        cities: [
+          {
+            city: 'Vilhena',
+          },
+          {
+            city: 'Colorado',
+          },
+        ],
+      },
+    ],
+  },
+];
+
+
 const userSchema = new mongoose.Schema({
   name: String,
   email: {
@@ -115,6 +135,9 @@ const userSchema = new mongoose.Schema({
       neighborhood: String,
       latitude: Number,
       longitude: Number,
+      city: String,
+      state: String,
+      country: String,
     },
   ],
   favorites: [String],
@@ -184,6 +207,10 @@ userSchema.statics.getCategories = function() {
   return [...marketCategories];
 };
 
+userSchema.statics.getAuthorizedLocations = function() {
+  return [...authorizedLocations];
+};
+
 userSchema.statics.getMarketCategory = function(categoryId) {
   const marketCategory = marketCategories
     .find(marketCategory => marketCategory.categoryId === categoryId);
@@ -195,9 +222,27 @@ userSchema.statics.isValidType = function(type) {
   return authorizedTypes.includes(type);
 };
 
+userSchema.statics.isAuthorizedAddress = function({ state, city, country }) {
+  const authorizedCountry = authorizedLocations
+    .find(local => local.country === country);
+
+  if (!authorizedCountry) return false;
+
+  const authorizedState = authorizedCountry.states
+    .find(({ state: countryState }) => countryState === state);
+
+  if (!authorizedState) return false;
+
+  const authorizedCity = authorizedState.cities
+    .find(({ city: stateCity }) => stateCity === city);
+
+  if (!authorizedCity) return false;
+
+  return true;
+};
+
 userSchema.methods.delete = function() {
   this.isDeleted = true;
 };
-
 
 module.exports = mongoose.model('User', userSchema);

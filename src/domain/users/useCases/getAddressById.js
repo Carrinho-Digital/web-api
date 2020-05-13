@@ -1,3 +1,7 @@
+const {
+  NotFound: NotFoundException,
+} = require('../../../exceptions');
+
 function buildGetAddressById({
   getAddresses,
 }) {
@@ -5,7 +9,7 @@ function buildGetAddressById({
     const addresses = await getAddresses(userId);
 
     if (!addresses || addresses.length < 1) {
-      return null;
+      throw new NotFoundException('Cannot found user address');
     }
 
     return addresses.id(addressId);

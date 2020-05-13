@@ -12,6 +12,12 @@ function buildUpsertUserAddress() {
     userId,
     isMarket,
   ) {
+    const isValidAddress = User.isAuthorizedAddress(addressValues);
+
+    if (!isValidAddress) {
+      throw new GeneralException('Address is not valid', 422);
+    }
+
     if (addressId) {
       const updatedValue = await User.findOneAndUpdate(
         { '_id': userId, 'addresses._id': addressId },
