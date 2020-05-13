@@ -15,7 +15,7 @@ function createMaps() {
   });
 }
 
-function distanceToDelivery(
+function googleDistanceMatrix(
   { latX, longX },
   { latY, longY },
   departureTime = Date.now(),
@@ -58,6 +58,6 @@ function distanceBetweenCoordinates({ latX, longX }, { latY, longY }) {
 }
 
 module.exports = {
-  distanceToDelivery,
+  googleDistanceMatrix,
   distanceBetweenCoordinates,
 };

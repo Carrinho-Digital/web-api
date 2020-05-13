@@ -3,6 +3,8 @@ const { NotFound: NotFoundException } = require('../../../exceptions');
 
 function buildGetCurrentCartByMarket({
   marketExists,
+  deliveryPrice,
+  deliveryDistance,
 } = {}) {
   return async function getCurrentCartByMarket(marketId, userId) {
     try {
@@ -25,9 +27,35 @@ function buildGetCurrentCartByMarket({
       throw new NotFoundException('Cannot found cart for this market');
     }
 
+    const totalPriceOfProducts = await cart.totalPriceOfProducts();
+
+    let totalPriceOfDelivery = 0;
+
+    if (cart.delivery && cart.delivery.method === 'delivery') {
+      try {
+        const distanceToCustomer = await deliveryDistance(
+          cart.delivery.address,
+          userId,
+          marketId,
+        );
+
+        const distanceToCustomerInKm = distanceToCustomer / 1000;
+
+        totalPriceOfDelivery = await deliveryPrice(
+          distanceToCustomerInKm,
+          marketId,
+        );
+      } catch (exception) {
+        totalPriceOfDelivery = 0;
+      }
+    }
+
     return {
       cart,
-      total: await cart.total(),
+      total: {
+        cart: totalPriceOfProducts,
+        delivery: totalPriceOfDelivery,
+      },
     };
   };
 }
