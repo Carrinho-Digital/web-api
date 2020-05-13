@@ -21,12 +21,6 @@ const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
 
 const categories = require('./categories');
 
-router.get('/:customerAddressId',
-  authentication,
-  only('CUSTOMER_USER'),
-  getAllMarkets,
-);
-
 router.get(
   '/rules',
   authentication,
@@ -66,6 +60,12 @@ router.get(
   authentication,
   only('CUSTOMER_USER'),
   getCurrentMarketTags,
+);
+
+router.get('/:customerAddressId',
+  authentication,
+  only('CUSTOMER_USER'),
+  getAllMarkets,
 );
 
 router.post(

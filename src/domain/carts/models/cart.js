@@ -50,7 +50,7 @@ const cartSchema = new mongoose.Schema({
   toJSON: { virtuals: true },
 });
 
-cartSchema.methods.total = async function() {
+cartSchema.methods.totalPriceOfProducts = async function() {
   if (!Array.isArray(this.products)) {
     return 0;
   }
@@ -72,13 +72,10 @@ cartSchema.methods.total = async function() {
 
   const products = await Promise.all(promisseProducts);
 
-  const totalCart = products.reduce((prev, {product, quantity}) =>
+  const allProductsPrice = products.reduce((prev, {product, quantity}) =>
     prev + ( product.sellPrice * quantity ), 0);
 
-  return {
-    cart: totalCart,
-    delivery: 0,
-  };
+  return allProductsPrice;
 };
 
 module.exports.Cart = mongoose.model('Cart', cartSchema);
