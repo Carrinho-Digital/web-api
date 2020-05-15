@@ -2,6 +2,7 @@ const { Cart } = require('../models/cart');
 const { NotFound: NotFoundException } = require('../../../exceptions');
 
 function buildGetCurrentCartByMarket({
+  getUserById,
   marketExists,
   deliveryPrice,
   deliveryDistance,
@@ -17,6 +18,7 @@ function buildGetCurrentCartByMarket({
       throw new NotFoundException('Market cannot be found');
     }
 
+    const market = await getUserById(marketId);
     const cart = await Cart.findOne({
       user: userId,
       market: marketId,
@@ -31,7 +33,10 @@ function buildGetCurrentCartByMarket({
 
     let totalPriceOfDelivery = 0;
 
-    if (cart.delivery && cart.delivery.method === 'delivery') {
+    if (!market.freeDelivery &&
+        cart.delivery &&
+        cart.delivery.method === 'delivery'
+    ) {
       try {
         const distanceToCustomer = await deliveryDistance(
           cart.delivery.address,
