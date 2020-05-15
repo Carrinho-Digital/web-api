@@ -33,6 +33,7 @@ const deliveryPrice = buildDeliveryPrice({
 });
 
 const getCurrentCartByMarket = buildGetCartByMarket({
+  getUserById,
   marketExists,
   deliveryPrice,
   deliveryDistance,

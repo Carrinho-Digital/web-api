@@ -4,8 +4,8 @@ const {
 } = require('../../../exceptions');
 
 function buildDelivery({
-  getCurrentCartByMarket,
   getAddressById,
+  getCurrentCartByMarket,
 }) {
   return async function delivery(method, addressId, marketId, userId) {
     const { cart: currentCart } = await getCurrentCartByMarket(
