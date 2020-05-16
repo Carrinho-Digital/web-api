@@ -22,6 +22,12 @@ const buildDeliveryDistance = require('./deliveryDistance');
 const buildSavePaymentOnCart = require('./savePaymentOnCart');
 const buildGetCartByMarket = require('./getCurrentCartByMarket');
 const buildAddProductsOnMarketCart = require('./addProductsOnMarketCart');
+const buildMarketHasProductsInTheCart = require('./marketHasProductsInTheCart');
+
+const marketHasProductsInTheCart = buildMarketHasProductsInTheCart({
+  belowsToMarket,
+  productHasQuantity,
+});
 
 const deliveryDistance = buildDeliveryDistance({
   getUserById,
@@ -39,16 +45,17 @@ const getCurrentCartByMarket = buildGetCartByMarket({
   deliveryDistance,
 });
 const addProductsOnMarketCart = buildAddProductsOnMarketCart({
-  belowsToMarket,
-  productHasQuantity,
   getCurrentCartByMarket,
+  marketHasProductsInTheCart,
 });
 const delivery = buildDelivery({
   getAddressById,
   getCurrentCartByMarket,
 });
 const checkout = buildCheckout({
+  getUserById,
   getCurrentCartByMarket,
+  marketHasProductsInTheCart,
 });
 const availability = buildAvailability({
   getCurrentCartByMarket,

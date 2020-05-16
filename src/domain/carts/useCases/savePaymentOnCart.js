@@ -46,7 +46,7 @@ function buildSavePaymentOnCart({
     }
 
     if (paymentMethod.method === 'DINHEIRO' && exchange < totalToPay) {
-      throw new GeneralException('You dont have sufficient founds', 422);
+      throw new GeneralException('You have not sufficient founds', 422);
     }
 
     const paymentToSave = {
