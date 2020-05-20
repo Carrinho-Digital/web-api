@@ -1,4 +1,3 @@
-// TODO: terminar o login social com passport
 const passport = require('passport');
 const FacebookTokenStrategy = require('passport-facebook-token');
 

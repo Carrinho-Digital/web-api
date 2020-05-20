@@ -1,35 +1,27 @@
+const moment = require('moment');
 const {
   General: GeneralException,
+  NotFound: NotFoundException,
 } = require('../../../exceptions');
 
+
 function buildCheckout({
-  getUserById,
+  getProductById,
+  productHasQuantity,
   getCurrentCartByMarket,
-  marketHasProductsInTheCart,
+  findMarketAvailability,
 }) {
-  function cartIsClosed(cart) {
-    return cart.closed === true;
-  }
-
-  function cartHasDelivery(cart) {
-    if (!cart.delivery) return false;
-
-    const { method, address } = cart.delivery;
-
-    if (method === 'pickup') return true;
-
-    if (method === 'delivery' && !address) return false;
-
-    return true;
-  }
-
   function cartHasPaymentMethod(
     cart,
     { cart: cartValue, delivery: deliveryValue },
   ) {
     if (!cart.payment) return false;
 
-    if (cart.payment.method === 'DINHEIRO') {
+    const { method } = cart.payment;
+
+    if (!method) return false;
+
+    if (method === 'DINHEIRO') {
       const exchange = Number(cart.payment.exchange);
       const exchangeIsNaN = isNaN(exchange);
 
@@ -38,17 +30,40 @@ function buildCheckout({
 
       if (exchange < cartTotal) return false;
     }
+
     return true;
   }
 
-  function cartHasAvailabilityDelivery(cart) {
-    if (!cart.availability) return false;
-    return true;
+  async function allProductsHaveEnoughStock(productOnCart) {
+    const productId = productOnCart.product;
+    const productQuantity = productOnCart.quantity;
+
+    try {
+      const marketHasProductQuantity = await productHasQuantity(
+        productId, productQuantity);
+
+      return marketHasProductQuantity;
+    } catch (exception) {
+      if (exception instanceof NotFoundException) {
+        throw exception;
+      }
+
+      throw new GeneralException(
+        exception.message, exception.statusCode || 422);
+    }
   }
 
-  function cartHasProducts(cart) {
-    if (!cart.products) return false;
-    return cart.products.length > 0;
+  async function grabProductFromShelf(productOnCart) {
+    const productId = productOnCart.product;
+    const productQuantity = productOnCart.quantity;
+
+    const product = await getProductById(productId);
+    const quantityAfterGrab = product.amount - Number(productQuantity);
+
+    product.amount = quantityAfterGrab;
+    const updatedProduct = await product.save();
+
+    return updatedProduct;
   }
 
   return async function checkout(marketId, userId) {
@@ -57,12 +72,16 @@ function buildCheckout({
       total: cartTotal,
     } = await getCurrentCartByMarket(marketId, userId);
 
-    if (cartIsClosed(currentCart)) {
+    if (currentCart.isClosed()) {
       throw new GeneralException('Cart is already closed', 400);
     }
 
-    if (!cartHasDelivery(currentCart)) {
+    if (!currentCart.hasDelivery()) {
       throw new GeneralException('Cart has not delivery method', 422);
+    }
+
+    if (!currentCart.hasProducts()) {
+      throw new GeneralException('Cart must have at least 1 product', 422);
     }
 
     if (!cartHasPaymentMethod(currentCart, cartTotal)) {
@@ -71,28 +90,44 @@ function buildCheckout({
     }
 
     if (currentCart.delivery.method === 'delivery') {
-      if (!cartHasAvailabilityDelivery(currentCart)) {
+      currentCart.setDeliveryPrice(cartTotal.delivery);
+
+      if (!currentCart.hasAvailability()) {
+        throw new GeneralException('Cart has not availability delivery', 422);
+      }
+
+      const customerAvailabilityFrom = moment(
+        currentCart.availability.from).utc();
+
+      const customerAvailabilityTo = moment(
+        currentCart.availability.to).utc();
+
+      const marketHasAvailability = await findMarketAvailability(
+        marketId, customerAvailabilityFrom, customerAvailabilityTo);
+
+      if (!marketHasAvailability) {
         throw new GeneralException('Cart has not availability delivery', 422);
       }
     }
 
-    if (!cartHasProducts(currentCart)) {
-      throw new GeneralException('Cart must have at least 1 product', 422);
+    const promisseIsAllProductsOk = currentCart.products
+      .map(allProductsHaveEnoughStock);
+
+    const allProductsIsOk = await Promise.all(promisseIsAllProductsOk);
+
+    if (!allProductsIsOk.every(hasStock => hasStock === true)) {
+      throw new GeneralException('Some products have not enough quantity', 412);
     }
 
-    const isAllProductsOk = await marketHasProductsInTheCart(
-      currentCart.products,
-      marketId,
-    );
+    const updateProductStockPromisse = currentCart.products
+      .map(grabProductFromShelf);
 
-    if (!isAllProductsOk) {
-      throw new GeneralException(
-        'Some products are not available on the market', 422);
-    }
+    await Promise.all(updateProductStockPromisse);
 
-    return {
-      currentCart, cartTotal,
-    };
+    await currentCart.closeCart();
+    await currentCart.save();
+
+    return currentCart;
   };
 }
 

@@ -32,23 +32,24 @@ const cartSchema = new mongoose.Schema({
     address: {
       type: mongoose.Schema.Types.ObjectId,
     },
+    price: Number,
   },
   availability: {
-    dayOfWeek: String,
     from: Date,
     to: Date,
   },
   payment: {
     method: {
       type: String,
-      required: true,
     },
     exchange: Number,
     document: String,
   },
+  total: Number,
 }, {
   toJSON: { virtuals: true },
 });
+
 
 cartSchema.methods.totalPriceOfProducts = async function() {
   if (!Array.isArray(this.products)) {
@@ -76,6 +77,57 @@ cartSchema.methods.totalPriceOfProducts = async function() {
     prev + ( product.sellPrice * quantity ), 0);
 
   return allProductsPrice;
+};
+
+cartSchema.methods.isClosed = function() {
+  return this.closed === true;
+};
+
+cartSchema.methods.hasDelivery = function() {
+  if (!this.delivery) return false;
+
+  const { method, address } = this.delivery;
+
+  if (!method || !address) return false;
+
+  if (method === 'pickup') return true;
+
+  if (method === 'delivery' && !address) return false;
+
+  return true;
+};
+
+cartSchema.methods.hasProducts = function() {
+  if (!this.products) return false;
+  return this.products.length > 0 &&
+    this.products.map(product => product.quantity > 0);
+};
+
+cartSchema.methods.hasAvailability = function() {
+  const { from, to } = this.availability;
+
+  if (!from || !to) return false;
+  return true;
+};
+
+cartSchema.methods.closeCart = async function() {
+  if (this.isClosed()) {
+    throw new Error('Cart is already closed');
+  }
+
+  this.total = await this.totalPriceOfProducts();
+
+  this.closed = true;
+  this.updatedAt = Date.now();
+};
+
+cartSchema.methods.setDeliveryPrice = function(deliveryPrice) {
+  if ((deliveryPrice === null || deliveryPrice === undefined) &&
+      this.delivery.method === 'delivery') {
+    throw new Error('Delivery price cannot be null or undefined');
+  }
+
+  this.delivery.price = deliveryPrice;
 };
 
 module.exports.Cart = mongoose.model('Cart', cartSchema);

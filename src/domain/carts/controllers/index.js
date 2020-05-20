@@ -5,8 +5,16 @@ const delivery = require('./delivery');
 const checkout = require('./checkout');
 const payments = require('./payments');
 const availability = require('./availability');
+const cartsHistory = require('./cartsHistory');
 const getCurrentCartByMarket = require('./getCurrentCartByMarket');
 const addProductsOnMarketCart = require('./addProductsOnMarketCart');
+
+router.get(
+  '/history',
+  authentication,
+  only('CUSTOMER_USER'),
+  cartsHistory,
+);
 
 router.patch(
   '/delivery/:marketId',
