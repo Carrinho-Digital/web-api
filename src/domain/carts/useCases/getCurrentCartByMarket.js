@@ -26,7 +26,13 @@ function buildGetCurrentCartByMarket({
     });
 
     if (!cart) {
-      throw new NotFoundException('Cannot found cart for this market');
+      return {
+        cart: null,
+        total: {
+          cart: 0,
+          delivery: 0,
+        },
+      };
     }
 
     const totalPriceOfProducts = await cart.totalPriceOfProducts();

@@ -1,3 +1,5 @@
+const { paginate } = require('../../../utils/paginate');
+
 const {
   getUserById,
   getAddressById,
@@ -6,16 +8,18 @@ const {
 const {
   marketExists,
   getPaymentMethods,
-  getDeliveryAvailabilities,
+  findMarketAvailability,
+  marketHasProductsInTheCart,
 } = require('../../markets/useCases');
 
 const {
-  belowsToMarket,
+  getProductById,
   productHasQuantity,
 } = require('../../products/useCases');
 
 const buildDelivery = require('./delivery');
 const buildCheckout = require('./checkout');
+const buildCartsHistory = require('./cartsHistory');
 const buildAvailability = require('./availability');
 const buildDeliveryPrice = require('./deliveryPrice');
 const buildDeliveryDistance = require('./deliveryDistance');
@@ -39,29 +43,35 @@ const getCurrentCartByMarket = buildGetCartByMarket({
   deliveryDistance,
 });
 const addProductsOnMarketCart = buildAddProductsOnMarketCart({
-  belowsToMarket,
-  productHasQuantity,
   getCurrentCartByMarket,
+  marketHasProductsInTheCart,
 });
 const delivery = buildDelivery({
   getAddressById,
   getCurrentCartByMarket,
 });
-const checkout = buildCheckout({
-  getCurrentCartByMarket,
-});
 const availability = buildAvailability({
   getCurrentCartByMarket,
-  getDeliveryAvailabilities,
+  findMarketAvailability,
+});
+const checkout = buildCheckout({
+  getProductById,
+  productHasQuantity,
+  getCurrentCartByMarket,
+  findMarketAvailability,
 });
 const savePaymentOnCart = buildSavePaymentOnCart({
   getPaymentMethods,
   getCurrentCartByMarket,
 });
+const cartsHitory = buildCartsHistory({
+  paginate,
+});
 
 module.exports = {
   delivery,
   checkout,
+  cartsHitory,
   availability,
   savePaymentOnCart,
   getCurrentCartByMarket,
