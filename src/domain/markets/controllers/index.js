@@ -15,14 +15,11 @@ const deletePaymentMethod = require('./deletePaymentMethod');
 const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
 const getCurrentMarketTags = require('./getCurrentMarketTags');
+const getDeliveryAvailabilities = require('./getDeliveryAvailabilities');
+const upsertAvailability = require('./upsertDeliveryAvailability');
+const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
 
 const categories = require('./categories');
-
-router.get('/',
-  authentication,
-  only('CUSTOMER_USER'),
-  getAllMarkets,
-);
 
 router.get(
   '/rules',
@@ -32,9 +29,22 @@ router.get(
 );
 
 router.get(
+  '/availabilities/:marketId?',
+  authentication,
+  getDeliveryAvailabilities,
+);
+
+router.get(
   '/payments',
   authentication,
   only('MARKET_USER'),
+  getPaymentMethods,
+);
+
+router.get(
+  '/payments/:marketId',
+  authentication,
+  only('CUSTOMER_USER'),
   getPaymentMethods,
 );
 
@@ -52,11 +62,24 @@ router.get(
   getCurrentMarketTags,
 );
 
+router.get('/:customerAddressId',
+  authentication,
+  only('CUSTOMER_USER'),
+  getAllMarkets,
+);
+
 router.post(
   '/rules',
   authentication,
   only('MARKET_USER'),
   addDeliveryRule,
+);
+
+router.post(
+  '/availabilities',
+  authentication,
+  only('MARKET_USER'),
+  upsertAvailability,
 );
 
 router.post(
@@ -81,6 +104,13 @@ router.put(
 );
 
 router.put(
+  '/availabilities/:availabilityId',
+  authentication,
+  only('MARKET_USER'),
+  upsertAvailability,
+);
+
+router.put(
   '/payments/:paymentId',
   authentication,
   only('MARKET_USER'),
@@ -92,6 +122,13 @@ router.delete(
   authentication,
   only('MARKET_USER'),
   deleteDeliveryRule,
+);
+
+router.delete(
+  '/availability/:availabilityId',
+  authentication,
+  only('MARKET_USER'),
+  deleteDeliveryAvailability,
 );
 
 router.delete(

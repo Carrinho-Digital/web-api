@@ -5,9 +5,12 @@ const apiRouters = require('./routers');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 
+const { passport } = require('./middleware');
 const documentation = require('../documentation');
 
 const app = express();
+
+passport();
 
 app.use(morgan('tiny'));
 app.use(cors());

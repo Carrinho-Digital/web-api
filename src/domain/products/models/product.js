@@ -14,7 +14,6 @@ const validUnits = [
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   isDeleted: {
     type: Boolean,
@@ -36,11 +35,15 @@ const productSchema = new mongoose.Schema({
   },
   sku: String,
   sellPrice: Number,
+  images: [String],
   buyPrice: {
     type: Number,
     default: 0,
   },
   market: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+},
+{
+  timestamps: true,
 });
 
 productSchema.statics.isValidUnit = function(unit = '') {

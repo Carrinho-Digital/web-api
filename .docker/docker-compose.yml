@@ -18,15 +18,8 @@ services:
       - "8000:8000"
     networks:
       - dnet
-    environment:
-      - PORT=8000
-      - MONGODB_URI=mongodb://root:example@mongodb:27017/admin
-      - SALT=12
-      - SECRET=secret
-      - ISSUER=MercadoOnlinePlataform
-      - AUDIENCE=MercadoOnlineAudience
-      - EXPIRE_IN_MINUTES=240
-      - NODE_ENV=development
+    env_file:
+      - ../.env
 
 networks:
   dnet:

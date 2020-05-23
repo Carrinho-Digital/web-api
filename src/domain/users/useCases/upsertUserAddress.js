@@ -6,25 +6,45 @@ const {
 } = require('../../../exceptions');
 
 function buildUpsertUserAddress() {
+  function getNewestAddress(user) {
+    const addresses = [...user.addresses];
+
+    if (addresses.length < 1) return null;
+    return addresses[addresses.length - 1];
+  }
+
   return async function upsertUserAddress(
     addressId,
     addressValues,
     userId,
     isMarket,
   ) {
+    const isValidAddress = User.isAuthorizedAddress(addressValues);
+
+    if (!isValidAddress) {
+      throw new GeneralException('Address is not valid', 422);
+    }
+
     if (addressId) {
-      const updatedValue = await User.findOneAndUpdate(
+      const { value: updatedValue } = await User.findOneAndUpdate(
         { '_id': userId, 'addresses._id': addressId },
         {
           '$set': {
-            'addresses.$': addressValues,
+            'addresses.$': {...addressValues, _id: addressId },
           },
+        },
+        {
+          new: true,
+          upsert: false,
+          rawResult: true,
         },
       );
 
       if (!updatedValue) {
         throw new NotFoundException('Address could not be found', 404);
       }
+
+      return getNewestAddress(updatedValue);
     } else {
       const user = await User.findOne({ _id: userId });
 
@@ -39,6 +59,8 @@ function buildUpsertUserAddress() {
       user.addresses.push(addressValues);
 
       await user.save();
+
+      return getNewestAddress(user);
     }
   };
 }

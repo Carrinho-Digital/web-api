@@ -16,7 +16,7 @@ async function updateAddress(request, response) {
   }
 
   try {
-    await upsertUserAddress(
+    const updatedAddress = await upsertUserAddress(
       addressId,
       updateAddressBody.value,
       userId,
@@ -25,6 +25,7 @@ async function updateAddress(request, response) {
     return response.status(200).json({
       success: true,
       message: 'ADDRESS_UPDATED',
+      data: updatedAddress,
     });
   } catch (exception) {
     return response.status(exception.status || 500)

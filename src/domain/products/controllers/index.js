@@ -1,3 +1,4 @@
+const multer = require('multer');
 const router = require('express').Router();
 const { authentication, only } = require('../../../middleware');
 
@@ -9,6 +10,10 @@ const saveProduct = require('./saveProduct');
 const updateProduct = require('./updateProduct');
 const inactiveOrActiveProduct = require('./inactiveOrActiveProduct');
 const removeProduct = require('./removeProduct');
+const saveProductImages = require('./saveProductImages');
+const removeProductImage = require('./removeProductImage');
+
+const uploader = multer();
 
 router.get(
   '/',
@@ -18,17 +23,44 @@ router.get(
 );
 
 router.get('/:productId', authentication, getProduct);
-router.get('/market/:productId', authentication, only('MARKET_USER'), getFullProduct);
 
 router.get(
-  '/market/:marketId',
+  '/customer/market/:marketId',
   authentication,
   only('CUSTOMER_USER'),
   getProductsByMarket,
 );
 
-router.post('/', authentication, saveProduct);
+router.get(
+  '/market/:productId',
+  authentication,
+  only('MARKET_USER'),
+  getFullProduct,
+);
 
+
+router.post('/', authentication, saveProduct);
+router.post(
+  '/images',
+  uploader.array('images'),
+  authentication,
+  only('MARKET_USER'),
+  saveProductImages,
+);
+
+router.put(
+  '/images/remove/:productId',
+  authentication,
+  only('MARKET_USER'),
+  removeProductImage,
+);
+router.put(
+  '/images/:productId?',
+  uploader.array('images'),
+  authentication,
+  only('MARKET_USER'),
+  saveProductImages,
+);
 router.put('/:productId', authentication, updateProduct);
 
 router.patch(

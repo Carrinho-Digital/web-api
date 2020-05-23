@@ -3,8 +3,7 @@ const { General: GeneralException } = require('../../../exceptions');
 
 function buildAddProductsOnMarketCart({
   getCurrentCartByMarket,
-  belowsToMarket,
-  productHasQuantity,
+  marketHasProductsInTheCart,
 } = {}) {
   function createCart(marketId, userId) {
     const cart = new Cart({
@@ -28,7 +27,7 @@ function buildAddProductsOnMarketCart({
   return async function addProductsOnMarketCart(
     userId, marketId, productsInfo = [],
   ) {
-    let currentUserCartOnMarket = await getCurrentCartByMarket(
+    let { cart: currentUserCartOnMarket } = await getCurrentCartByMarket(
       marketId,
       userId,
     );
@@ -37,28 +36,14 @@ function buildAddProductsOnMarketCart({
       currentUserCartOnMarket = await createCart(marketId, userId);
     }
 
-    const promisseProductsOk = productsInfo.map(async (
-      { product, quantity } = {},
-    ) => {
-      try {
-        const productBelowsToMarket = await belowsToMarket(product, marketId);
-        const productHasEnoughQuantity = await productHasQuantity(
-          product,
-          quantity,
-        );
-
-        return productBelowsToMarket && productHasEnoughQuantity;
-      } catch (exception) {
-        return false;
-      }
-    });
-
-    const isAllProductsOk = (await Promise.all(promisseProductsOk))
-      .every(product => product === true);
+    const isAllProductsOk = await marketHasProductsInTheCart(
+      productsInfo,
+      marketId,
+    );
 
     if (!isAllProductsOk) {
       throw new GeneralException(
-        'Product dont bellows to market ordont have enough quantity',
+        'Product dont bellows to market or dont have enough quantity',
         422,
       );
     }
@@ -70,7 +55,7 @@ function buildAddProductsOnMarketCart({
       );
       return productsAdded;
     } catch (exception) {
-      throw GeneralException('Problems to add product on cart', 500);
+      throw new GeneralException('Problems to add products on cart', 500);
     }
   };
 }
