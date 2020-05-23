@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_ID: carrinhodigital
-  DOCKER_HOST: gcr.io
+  DOCKER_HOST: us.gcr.io
   IMAGE_NAME: webapi
 
 jobs:
@@ -23,6 +23,6 @@ jobs:
         with:
           username: _json_key
           password: ${{ secrets.GCP_APPLICATION_CREDENTIALS }}
-          registry: gcr.io
+          registry: ${{ env.DOCKER_HOST }}
           repository: ${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}
           tags: latest
