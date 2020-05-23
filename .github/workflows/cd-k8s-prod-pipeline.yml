@@ -1,0 +1,49 @@
+name: WebAPI-k8s-CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  PROJECT_ID: carrinhodigital
+  DOCKER_HOST: gcr.io
+  IMAGE_NAME: webapi
+
+jobs:
+  buil-docker-image:
+    name: "Build Docker Image"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+
+      - name: Setup GCloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: "286.0.0"
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_APPLICATION_CREDENTIALSs }}
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker Authentication
+        run: |
+          gcloud auth configure-docker
+
+      - name: Build Docker Image
+        run: |
+          export TAG=`echo $GITHUB_REF | awk -F/ '{print $NF}'`
+          echo $TAG
+          docker build -t "${{ env.DOCKER_HOST}}"/"${{ env.IMAGE_NAME }}":$TAG .
+
+      - name: Publish Docker Image on GCR
+        run: |
+          export TAG=`echo $GITHUB_REF | awk -F/ '{print $NF}'`
+          echo $TAG
+          docker push "${{ env.DOCKER_HOST}}"/"${{ env.IMAGE_NAME }}":$TAG
+          docker tag "${{ env.DOCKER_HOST}}"/"${{ env.IMAGE_NAME }}":$TAG "${{ env.DOCKER_HOST }}"/"${{ env.IMAGE_NAME }}":latest
+          docker push "${{ env.DOCKER_HOST }}"/"${{ env.IMAGE_NAME }}":latest
