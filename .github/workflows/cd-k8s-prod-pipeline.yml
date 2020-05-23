@@ -1,9 +1,6 @@
-name: WebAPI-k8s-CD
+name: WebAPI-k8s
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
