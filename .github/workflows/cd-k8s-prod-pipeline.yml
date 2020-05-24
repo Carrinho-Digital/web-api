@@ -13,7 +13,7 @@ env:
   GITHUB_REF: ${{ github.ref }}
   PROJECT_ID: carrinhodigital
   REGISTRY_HOSTNAME: gcr.io
-  IMAGE: webapi
+  IMAGE: carrinhodigital/webapi
 
 jobs:
   build-docker-image:
