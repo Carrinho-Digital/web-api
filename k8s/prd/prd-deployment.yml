@@ -37,6 +37,8 @@ spec:
           volumeMounts:
             - name: gcp-credentials
               mountPath: /etc/config
+      imagePullSecrets:
+        - name: gcr-docker-image-credentials
       volumes:
         - name: gcp-credentials
           configMap:
