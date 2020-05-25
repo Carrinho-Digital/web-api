@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
       - name: Replace $(SALT)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
           include: ${{ env.K8S_SECRETS_DIR }}
           find: "%%salt%%"
