@@ -94,7 +94,7 @@ jobs:
 
       - name: Install Ingress Controller
         run: |
-          helm install nginx-ingress/nginx-ingress --set controller.publishService.enabled=true
+          helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true
 
       - name: Deploy k8s files to cluster
         run: |
