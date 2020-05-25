@@ -1,15 +1,7 @@
 const axios = require('axios');
 const { Client } = require('@googlemaps/google-maps-services-js');
 
-const ENV = process.env.NODE_ENV;
-
 function createMaps() {
-  if (ENV === 'production') {
-    return new Client({
-      axiosInstance: axios,
-    });
-  }
-
   return new Client({
     axiosInstance: axios,
   });

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prd-carrinhodigital-configmap
+data:
+  PORT: "8080"
+  EXPIRE_IN_MINUTES: "240"

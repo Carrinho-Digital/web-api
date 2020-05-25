@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prd-carrinhodigital-webapi
+  labels:
+    app: carrinhodigital-webapi
+    env: prd
+spec:
+  selector:
+    matchLabels:
+      app: carrinhodigital-webapi
+      env: prd
+  template:
+    metadata:
+      labels:
+        app: carrinhodigital-webapi
+        env: prd
+    spec:
+      containers:
+        - name: prd-carrinhodigital-webapi
+          image: gcr.io/carrinhodigital/webapi:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "500M"
+            limits:
+              cpu: "750m"
+              memory: "1.2G"
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: prd-carrinhodigital-configmap
+            - secretsRef:
+                name: prd-carrinhodigital-secrets
