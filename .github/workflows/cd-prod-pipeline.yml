@@ -31,7 +31,6 @@ jobs:
       - name: Replace $(SALT)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          include: ${{ env.K8S_SECRETS_DIR }}
           find: "%%salt%%"
           replace: ${{ secrets.SALT }}
 
