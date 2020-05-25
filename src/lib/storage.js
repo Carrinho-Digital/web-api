@@ -2,14 +2,9 @@ const { v4: uuid } = require('uuid');
 const mime = require('mime-types');
 const { Storage } = require('@google-cloud/storage');
 
-const ENV = process.env.NODE_ENV;
 const BUCKET_NAME = process.env.BUCKET_NAME;
 
 function createStorage() {
-  if (ENV === 'production') {
-    return new Storage();
-  }
-
   return new Storage({
     projectId: 'carrinhodigital',
     keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,

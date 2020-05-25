@@ -1,0 +1,99 @@
+name: WebAPI-CD-DigitalOcean-k8s
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_REF: ${{ github.ref }}
+  PROJECT_ID: carrinhodigital
+  DOCKER_IMAGE: gcr.io/carrinhodigital/webapi:latest
+  K8S_DIR: k8s/prd
+  CLUSTER_NAME: "kubernetes-prod-cluster"
+
+jobs:
+  setup-publish-kuberntes-files:
+    name: "Setup K8S Cluster"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v2
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+
+      - name: Replace $(SALT)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(SALT)"
+          replace: ${{ secrets.SALT }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(SECRET)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(SECRET)"
+          replace: ${{ secrets.SECRET }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(ISSUER)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(ISSUER)"
+          replace: ${{ secrets.ISSUER }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(AUDIENCE)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(AUDIENCE)"
+          replace: ${{ secrets.AUDIENCE }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(BUCKET_NAME)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(BUCKET_NAME)"
+          replace: ${{ secrets.BUCKET_NAME }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(MONGODB_URI)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(MONGODB_URI)"
+          replace: ${{ secrets.MONGODB_URI }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(FACEBOOK_APP_ID)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(FACEBOOK_APP_ID)"
+          replace: ${{ secrets.FACEBOOK_APP_ID }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(FACEBOOK_APP_SECRET)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(FACEBOOK_APP_SECRET)"
+          replace: ${{ secrets.FACEBOOK_APP_SECRET }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Replace $(GOOGLE_DISTANCE_MATRIX_API_KEY)
+        uses: shitiomatic/str-replace@master
+        with:
+          find: "$(GOOGLE_DISTANCE_MATRIX_API_KEY)"
+          replace: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
+          include: ${{ env.K8S_DIR }}
+
+      - name: Create DigitalOcean kubeconfig
+        run: |
+          doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
+
+      - name: Deploy k8s files to cluster
+        run: |
+          kubectl apply -f $GITHUB_WORKSPACE/${{ env.K8S_DIR }}
