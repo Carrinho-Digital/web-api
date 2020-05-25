@@ -10,8 +10,8 @@ env:
   GITHUB_REF: ${{ github.ref }}
   PROJECT_ID: carrinhodigital
   DOCKER_IMAGE: gcr.io/carrinhodigital/webapi:latest
-  K8S_DIR: $GITHUB_WORKSPACE/k8s/prd
-  K8S_SECRETS_DIR: $GITHUB_WORKSPACE/k8s/prd/prd-secrets.yml
+  K8S_DIR: ${{ github.workspace }}/k8s/prd
+  K8S_SECRETS_DIR: ${{ github.workspace }}/k8s/prd/prd-secrets.yml
   CLUSTER_NAME: "kubernetes-prod-cluster"
 
 jobs:
