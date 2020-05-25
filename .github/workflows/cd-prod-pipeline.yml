@@ -33,63 +33,63 @@ jobs:
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          SALT: ${{ secrets.SALT }}
+          salt: ${{ secrets.SALT }}
 
       - name: Replace $(SECRET)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          SECRET: ${{ secrets.SECRET }}
+          secret: ${{ secrets.SECRET }}
 
       - name: Replace $(ISSUER)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          ISSUER: ${{ secrets.ISSUER }}
+          issuer: ${{ secrets.ISSUER }}
 
       - name: Replace $(AUDIENCE)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          AUDIENCE: ${{ secrets.AUDIENCE }}
+          audience: ${{ secrets.AUDIENCE }}
 
       - name: Replace $(BUCKET_NAME)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          bucket_name: ${{ secrets.BUCKET_NAME }}
 
       - name: Replace $(MONGODB_URI)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          mongodb_uri: ${{ secrets.MONGODB_URI }}
 
       - name: Replace $(FACEBOOK_APP_ID)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+          facebook_app_id: ${{ secrets.FACEBOOK_APP_ID }}
 
       - name: Replace $(FACEBOOK_APP_SECRET)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          FACEBOOK_APP_SECRET: ${{ secrets.FACEBOOK_APP_SECRET }}
+          facebook_app_secret: ${{ secrets.FACEBOOK_APP_SECRET }}
 
       - name: Replace $(GOOGLE_DISTANCE_MATRIX_API_KEY)
         uses: BjornLuG/substitute-string-action@v1
         with:
           _input-file: ${{ env.K8S_SECRETS_DIR }}
           _format-key: "%%key%%"
-          GOOGLE_DISTANCE_MATRIX_API_KEY: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
+          google_distance_matrix_api_key: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
 
       - name: Create GCP Application Credentials
         run: |
