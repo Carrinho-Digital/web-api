@@ -31,64 +31,56 @@ jobs:
       - name: Replace $(SALT)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "%%salt%%"
+          find: "%%prd_salt%%"
           replace: ${{ secrets.SALT }}
 
       - name: Replace $(SECRET)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          secret: ${{ secrets.SECRET }}
+          find: "%%prd_secret%%"
+          replace: ${{ secrets.SECRET }}
 
       - name: Replace $(ISSUER)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          issuer: ${{ secrets.ISSUER }}
+          find: "%%prd_issuer%%"
+          replace: ${{ secrets.ISSUER }}
 
       - name: Replace $(AUDIENCE)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          audience: ${{ secrets.AUDIENCE }}
+          find: "%%prd_audience%%"
+          replace: ${{ secrets.AUDIENCE }}
 
       - name: Replace $(BUCKET_NAME)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          bucket_name: ${{ secrets.BUCKET_NAME }}
+          find: "%%prd_bucket_name%%"
+          replace: ${{ secrets.BUCKET_NAME }}
 
       - name: Replace $(MONGODB_URI)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          mongodb_uri: ${{ secrets.MONGODB_URI }}
+          find: "%%prd_mongodb_uri%%"
+          replace: ${{ secrets.MONGODB_URI }}
 
       - name: Replace $(FACEBOOK_APP_ID)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          facebook_app_id: ${{ secrets.FACEBOOK_APP_ID }}
+          find: "%%prd_facebook_app_id%%"
+          replace: ${{ secrets.FACEBOOK_APP_ID }}
 
       - name: Replace $(FACEBOOK_APP_SECRET)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          facebook_app_secret: ${{ secrets.FACEBOOK_APP_SECRET }}
+          find: "%%prd_facebook_app_secret%%"
+          replace: ${{ secrets.FACEBOOK_APP_SECRET }}
 
       - name: Replace $(GOOGLE_DISTANCE_MATRIX_API_KEY)
-        uses: BjornLuG/substitute-string-action@v1
+        uses: jacobtomlinson/gha-find-replace@master
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          google_distance_matrix_api_key: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
+          find: "%%prd_google_distance_matrix_api_key%%"
+          replace: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
 
       - name: Create GCP Application Credentials
         run: |
