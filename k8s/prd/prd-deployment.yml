@@ -32,5 +32,15 @@ spec:
           envFrom:
             - configMapRef:
                 name: prd-carrinhodigital-configmap
-            - secretsRef:
+            - secretRef:
                 name: prd-carrinhodigital-secrets
+          volumeMounts:
+            - name: gcp-credentials
+              mountPath: /etc/config
+      volumes:
+        - name: gcp-credentials
+          configMap:
+            name: prd-gcp-configmap
+            items:
+              - key: application-credentials
+                path: google_application_credentials.json

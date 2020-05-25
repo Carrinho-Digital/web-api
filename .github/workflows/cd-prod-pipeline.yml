@@ -10,7 +10,7 @@ env:
   GITHUB_REF: ${{ github.ref }}
   PROJECT_ID: carrinhodigital
   DOCKER_IMAGE: gcr.io/carrinhodigital/webapi:latest
-  K8S_DIR: k8s/prd
+  K8S_DIR: $GITHUB_WORKSPACE/k8s/prd
   CLUSTER_NAME: "kubernetes-prod-cluster"
 
 jobs:
@@ -90,10 +90,16 @@ jobs:
           replace: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
           include: ${{ env.K8S_DIR }}
 
+      - name: Create GCP Application Credentials
+        run: |
+          cat > ${{ env.K8S_DIR }}/application-credentials.json <<EOF
+            ${{ secrets.GCP_JSON_APP_KEY }}
+          EOF
+
       - name: Create DigitalOcean kubeconfig
         run: |
           doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
 
       - name: Deploy k8s files to cluster
         run: |
-          kubectl apply -f $GITHUB_WORKSPACE/${{ env.K8S_DIR }}
+          kubectl apply -f ${{ env.K8S_DIR }}

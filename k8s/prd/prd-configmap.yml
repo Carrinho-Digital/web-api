@@ -5,3 +5,4 @@ metadata:
 data:
   PORT: "8080"
   EXPIRE_IN_MINUTES: "240"
+  GOOGLE_APPLICATION_CREDENTIALS: "/etc/config/google_application_credentials.json"
