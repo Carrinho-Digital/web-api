@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - master
-  push:
-    branches:
-      - master
 
 env:
   GITHUB_SHA: ${{ github.sha }}

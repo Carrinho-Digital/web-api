@@ -1,0 +1,17 @@
+name: WebAPI-CD-DigitalOcean-k8s
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_REF: ${{ github.ref }}
+  PROJECT_ID: carrinhodigital
+  DOCKER_IMAGE: gcr.io/carrinhodigital/webapi:latest
+
+jobs:
+  setup-publish-kuberntes-files:
+    name: "Setup K8S Cluster"
+    runs-on: ubuntu-latest
