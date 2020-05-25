@@ -10,5 +10,5 @@ spec:
       http:
         paths:
           - backend:
-            serviceName: prd-carrinhodigital-service
-            servicePort: 8080
+              serviceName: prd-carrinhodigital-service
+              servicePort: 8080
