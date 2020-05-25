@@ -6,7 +6,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: webapi.carrinhodigital.coCopy
+    - host: webapi.carrinhodigital.co
       http:
         paths:
           - backend:
