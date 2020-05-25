@@ -11,6 +11,7 @@ env:
   PROJECT_ID: carrinhodigital
   DOCKER_IMAGE: gcr.io/carrinhodigital/webapi:latest
   K8S_DIR: $GITHUB_WORKSPACE/k8s/prd
+  K8S_SECRETS_DIR: $GITHUB_WORKSPACE/k8s/prd/prd-secrets.yml
   CLUSTER_NAME: "kubernetes-prod-cluster"
 
 jobs:
@@ -31,64 +32,64 @@ jobs:
         uses: shitiomatic/str-replace@master
         with:
           find: "$(SALT)"
-          replace: ${{ secrets.SALT }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.SALT }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(SECRET)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(SECRET)"
-          replace: ${{ secrets.SECRET }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.SECRET }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(ISSUER)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(ISSUER)"
-          replace: ${{ secrets.ISSUER }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.ISSUER }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(AUDIENCE)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(AUDIENCE)"
-          replace: ${{ secrets.AUDIENCE }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.AUDIENCE }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(BUCKET_NAME)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(BUCKET_NAME)"
-          replace: ${{ secrets.BUCKET_NAME }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.BUCKET_NAME }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(MONGODB_URI)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(MONGODB_URI)"
-          replace: ${{ secrets.MONGODB_URI }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.MONGODB_URI }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(FACEBOOK_APP_ID)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(FACEBOOK_APP_ID)"
-          replace: ${{ secrets.FACEBOOK_APP_ID }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.FACEBOOK_APP_ID }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(FACEBOOK_APP_SECRET)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(FACEBOOK_APP_SECRET)"
-          replace: ${{ secrets.FACEBOOK_APP_SECRET }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.FACEBOOK_APP_SECRET }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Replace $(GOOGLE_DISTANCE_MATRIX_API_KEY)
         uses: shitiomatic/str-replace@master
         with:
           find: "$(GOOGLE_DISTANCE_MATRIX_API_KEY)"
-          replace: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
-          include: ${{ env.K8S_DIR }}
+          replace: "${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}"
+          include: "${{ env.K8S_SECRETS_DIR }}"
 
       - name: Create GCP Application Credentials
         run: |
