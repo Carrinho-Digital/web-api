@@ -4,4 +4,4 @@ metadata:
   name: prd-gcp-configmap
 data:
   application-credentials: |-
-    {{ .Files.Get "application-credentials.json" | indent 4 }}
+    {{ .Files.Get "../application-credentials.json" | indent 4 }}

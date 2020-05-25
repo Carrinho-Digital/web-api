@@ -88,12 +88,10 @@ jobs:
             ${{ secrets.GCP_JSON_APP_KEY }}
           EOF
 
-      - name: Create GCP Application Credentials
+      - name: Create DigitalOcean kubeconfig
         run: |
-          cat ${{ env.K8S_SECRETS_DIR }}
-      # - name: Create DigitalOcean kubeconfig
-      #   run: |
-      #     doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
-      # - name: Deploy k8s files to cluster
-      #   run: |
-      #     kubectl apply -f ${{ env.K8S_DIR }}
+          doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
+
+      - name: Deploy k8s files to cluster
+        run: |
+          kubectl apply -f ${{ env.K8S_DIR }}
