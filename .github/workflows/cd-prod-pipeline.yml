@@ -24,16 +24,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+        uses: jacobtomlinson/gha-find-replace@master
         with:
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
       - name: Replace $(SALT)
         uses: BjornLuG/substitute-string-action@v1
         with:
-          _input-file: ${{ env.K8S_SECRETS_DIR }}
-          _format-key: "%%key%%"
-          salt: ${{ secrets.SALT }}
+          include: ${{ env.K8S_SECRETS_DIR }}
+          find: "%%salt%%"
+          replace: ${{ secrets.SALT }}
 
       - name: Replace $(SECRET)
         uses: BjornLuG/substitute-string-action@v1
