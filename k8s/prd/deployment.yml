@@ -22,13 +22,13 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: "250m"
-              memory: "500M"
+              cpu: '250m'
+              memory: '500M'
             limits:
-              cpu: "750m"
-              memory: "1.2G"
+              cpu: '750m'
+              memory: '1.2G'
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           envFrom:
             - configMapRef:
                 name: prd-carrinhodigital-configmap

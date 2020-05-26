@@ -3,12 +3,13 @@ kind: Ingress
 metadata:
   name: prd-carrinhodigital-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: traefik
 spec:
   rules:
-    - host: webapi.carrinhodigital.co
+    - host: api.carrinhodigital.co
       http:
         paths:
-          - backend:
+          - path: /
+            backend:
               serviceName: prd-carrinhodigital-service
-              servicePort: 8080
+              servicePort: carrinhodigital-port
