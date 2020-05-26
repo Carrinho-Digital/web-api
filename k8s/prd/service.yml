@@ -6,7 +6,6 @@ metadata:
     app: carrinhodigital-webapi-service
     env: prd
 spec:
-  type: ClusterIP
   selector:
     app: carrinhodigital-webapi
     env: prd
