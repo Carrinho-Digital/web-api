@@ -9,7 +9,6 @@ spec:
   selector:
     app: carrinhodigital-webapi
     env: prd
-  type: LoadBalancer
   ports:
     - name: http
       port: 80
