@@ -6,7 +6,6 @@ metadata:
     app: carrinhodigital-webapi-service
     env: prd
 spec:
-  type: NodePort
   selector:
     app: carrinhodigital-webapi
     env: prd
