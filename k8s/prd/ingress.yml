@@ -13,5 +13,3 @@ spec:
             backend:
               serviceName: prd-carrinhodigital-service
               servicePort: 80
-  tls:
-    - secretName: secret-tls
