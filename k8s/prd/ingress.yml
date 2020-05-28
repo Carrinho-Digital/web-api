@@ -4,7 +4,6 @@ metadata:
   name: carrinhodigital-ingress
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
-    traefik.ingress.kubernetes.io/service.serversscheme: https
 spec:
   rules:
     - host: api.carrinhodigital.co
@@ -18,5 +17,3 @@ spec:
             backend:
               serviceName: prd-carrinhodigital-service
               servicePort: 443
-  tls:
-    - secretName: secret-tls
