@@ -6,11 +6,9 @@ metadata:
     app: carrinhodigital-webapi
     env: prd
 spec:
-  type: NodePort
   selector:
     app: carrinhodigital-webapi
   ports:
-    - port: 8080
+    - port: 80
       targetPort: 8080
-      nodePort: 30008
-      name: carrinhodigital-port
+      name: http
