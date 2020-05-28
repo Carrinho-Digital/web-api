@@ -22,15 +22,27 @@ spec:
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: "250m"
-              memory: "500M"
+              cpu: '250m'
+              memory: '500M'
             limits:
-              cpu: "750m"
-              memory: "1.2G"
+              cpu: '750m'
+              memory: '1.2G'
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: prd-carrinhodigital-configmap
-            - secretsRef:
+            - secretRef:
                 name: prd-carrinhodigital-secrets
+          volumeMounts:
+            - name: gcp-credentials
+              mountPath: /etc/config
+      imagePullSecrets:
+        - name: gcr-docker-image-credentials
+      volumes:
+        - name: gcp-credentials
+          configMap:
+            name: prd-gcp-configmap
+            items:
+              - key: application-credentials
+                path: google_application_credentials.json
