@@ -13,8 +13,3 @@ spec:
             backend:
               serviceName: prd-carrinhodigital-service
               servicePort: 80
-
-  tls:
-    - hosts:
-        - api.carrinhodigital.co
-      secretName: api.carrinhodigital.co-cert
