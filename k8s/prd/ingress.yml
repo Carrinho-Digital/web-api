@@ -4,6 +4,7 @@ metadata:
   name: carrinhodigital-ingress
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
+    cert-manager.io/cluster-issuer: letsencrypt-api-carrinhodigital
 spec:
   rules:
     - host: api.carrinhodigital.co
