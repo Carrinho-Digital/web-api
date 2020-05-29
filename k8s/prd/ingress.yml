@@ -17,4 +17,4 @@ spec:
   tls:
     - hosts:
         - api.carrinhodigital.co
-      secretName: api.carrinhodigital.co-cert
+      secretName: secret-tls
