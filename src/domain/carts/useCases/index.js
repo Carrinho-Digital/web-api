@@ -1,3 +1,4 @@
+const events = require('../../../events');
 const { paginate } = require('../../../utils/paginate');
 
 const {
@@ -55,6 +56,7 @@ const availability = buildAvailability({
   findMarketAvailability,
 });
 const checkout = buildCheckout({
+  events,
   getProductById,
   productHasQuantity,
   getCurrentCartByMarket,

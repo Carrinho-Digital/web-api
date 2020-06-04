@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-function buildAuthorize({ jwt }) {
+function buildAuthorize({ events, jwt }) {
   const userIsDeleted = user => user.isDeleted;
 
   return async function authorize(token) {
@@ -19,6 +19,8 @@ function buildAuthorize({ jwt }) {
     if (!user) return null;
 
     if (userIsDeleted(user)) return null;
+
+    events.fire(events.getEvents.AUTHORIZE_DONE, user);
 
     return user;
   };
