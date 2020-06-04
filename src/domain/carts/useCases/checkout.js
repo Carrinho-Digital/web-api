@@ -6,6 +6,7 @@ const {
 
 
 function buildCheckout({
+  events,
   getProductById,
   productHasQuantity,
   getCurrentCartByMarket,
@@ -126,6 +127,8 @@ function buildCheckout({
 
     await currentCart.closeCart();
     await currentCart.save();
+
+    events.fire(events.getEvents.CHECKOUT_MADE, currentCart);
 
     return currentCart;
   };
