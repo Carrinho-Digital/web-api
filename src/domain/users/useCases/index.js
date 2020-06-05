@@ -1,6 +1,7 @@
-const encrypt = require('../../../lib/encrypt');
 const jwt = require('../../../lib/jwt');
+const events = require('../../../events');
 const logger = require('../../../lib/logger');
+const encrypt = require('../../../lib/encrypt');
 
 const buildCreateUser = require('./createUser');
 const buildUpdateUser = require('./updateUser');
@@ -18,7 +19,7 @@ const getUserById = buildGetUserById();
 const createUser = buildCreateUser({ encrypt });
 const updateUser = buildUpdateUser({ encrypt, getUserById });
 const removeUser = buildRemoveUser();
-const authorize = buildAuthorize({ jwt });
+const authorize = buildAuthorize({ events, jwt });
 const login = buildLogin({ encrypt, jwt, logger });
 const facebookLogin = buildFacebookLogin({ jwt });
 const getAddresses = buildGetAddresses();

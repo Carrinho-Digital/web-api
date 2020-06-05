@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: prd-carrinhodigital-configmap
 data:
-  PORT: '8080'
-  EXPIRE_IN_MINUTES: '240'
-  GOOGLE_APPLICATION_CREDENTIALS: '/etc/config/google_application_credentials.json'
+  PORT: "8080"
+  EXPIRE_IN_MINUTES: "240"
+  REDIS_SOCKET_CLIENTS_URL: "prd-redis-socket-connections"
+  GOOGLE_APPLICATION_CREDENTIALS: "/etc/config/google_application_credentials.json"

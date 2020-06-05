@@ -12,11 +12,11 @@ env:
   DOCKER_IMAGE: gcr.io/carrinhodigital/webapi:latest
   K8S_DIR: ${{ github.workspace }}/k8s/prd
   K8S_SECRETS_DIR: ${{ github.workspace }}/k8s/prd/prd-secrets.yml
-  CLUSTER_NAME: 'kubernetes-prod-cluster'
+  CLUSTER_NAME: "kubernetes-prod-cluster"
 
 jobs:
   setup-publish-kuberntes-files:
-    name: 'Setup K8S Cluster'
+    name: "Setup K8S Cluster"
     runs-on: ubuntu-latest
 
     steps:
@@ -31,55 +31,55 @@ jobs:
       - name: Replace $(SALT)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_salt%%'
+          find: "%%prd_salt%%"
           replace: ${{ secrets.SALT }}
 
       - name: Replace $(SECRET)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_secret%%'
+          find: "%%prd_secret%%"
           replace: ${{ secrets.SECRET }}
 
       - name: Replace $(ISSUER)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_issuer%%'
+          find: "%%prd_issuer%%"
           replace: ${{ secrets.ISSUER }}
 
       - name: Replace $(AUDIENCE)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_audience%%'
+          find: "%%prd_audience%%"
           replace: ${{ secrets.AUDIENCE }}
 
       - name: Replace $(BUCKET_NAME)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_bucket_name%%'
+          find: "%%prd_bucket_name%%"
           replace: ${{ secrets.BUCKET_NAME }}
 
       - name: Replace $(MONGODB_URI)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_mongodb_uri%%'
+          find: "%%prd_mongodb_uri%%"
           replace: ${{ secrets.MONGODB_URI }}
 
       - name: Replace $(FACEBOOK_APP_ID)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_facebook_app_id%%'
+          find: "%%prd_facebook_app_id%%"
           replace: ${{ secrets.FACEBOOK_APP_ID }}
 
       - name: Replace $(FACEBOOK_APP_SECRET)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_facebook_app_secret%%'
+          find: "%%prd_facebook_app_secret%%"
           replace: ${{ secrets.FACEBOOK_APP_SECRET }}
 
       - name: Replace $(GOOGLE_DISTANCE_MATRIX_API_KEY)
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: '%%prd_google_distance_matrix_api_key%%'
+          find: "%%prd_google_distance_matrix_api_key%%"
           replace: ${{ secrets.GOOGLE_DISTANCE_MATRIX_API_KEY }}
 
       - name: Create GCP Application Credentials
