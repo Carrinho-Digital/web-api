@@ -17,15 +17,26 @@ spec:
         env: prd
     spec:
       containers:
+        - name: prd-redis-socket-connections
+          image: redis:6.0-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "200M"
+            limits:
+              cpu: "250m"
+              memory: "400M"
         - name: prd-carrinhodigital-webapi
           image: gcr.io/carrinhodigital/webapi:latest
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: "250m"
+              cpu: "150m"
               memory: "500M"
             limits:
-              cpu: "500m"
+              cpu: "250m"
               memory: "1G"
           ports:
             - containerPort: 8080
