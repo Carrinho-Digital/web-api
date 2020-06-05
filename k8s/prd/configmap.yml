@@ -5,5 +5,5 @@ metadata:
 data:
   PORT: "8080"
   EXPIRE_IN_MINUTES: "240"
-  REDIS_SOCKET_CLIENTS_URL: "prd-redis-socket-connections"
+  REDIS_SOCKET_CLIENTS_URL: "redis://localhost"
   GOOGLE_APPLICATION_CREDENTIALS: "/etc/config/google_application_credentials.json"
