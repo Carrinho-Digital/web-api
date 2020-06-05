@@ -1,5 +1,5 @@
 const winston = require('winston');
-const LoggingWinston = require('@google-cloud/logging-winston');
+const { LoggingWinston } = require('@google-cloud/logging-winston');
 
 const ENV = process.env.NODE_ENV;
 
