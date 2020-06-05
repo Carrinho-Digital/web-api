@@ -1,18 +1,6 @@
 const winston = require('winston');
-const { LoggingWinston } = require('@google-cloud/logging-winston');
-
-const ENV = process.env.NODE_ENV;
 
 const transports = [new winston.transports.Console()];
-
-if (ENV === 'production') {
-  const loggingWinston = new LoggingWinston({
-    projectId: 'carrinhodigital',
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  });
-
-  transports.push(loggingWinston);
-}
 
 const loggerWinston = winston.createLogger({
   transports: transports,
