@@ -54,6 +54,31 @@ const cartSchema = new mongoose.Schema({
   toJSON: { virtuals: true },
 });
 
+cartSchema.methods.hasDeletedOrInexistentProducts = async function() {
+  if (!Array.isArray(this.products)) {
+    return [];
+  }
+
+  if (this.products.length < 1) {
+    return [];
+  }
+
+  const deletedOrInexistentPromise = this.products.filter(async (
+    { product: productId } = {},
+  ) => {
+    const product = await Product.findOne({ _id: productId });
+
+    if (!product || (product && product.isDeleted)) {
+      return true;
+    }
+
+    return false;
+  });
+
+  const deletedOrInexistent = await Promise.all(deletedOrInexistentPromise);
+
+  return deletedOrInexistent;
+};
 
 cartSchema.methods.totalPriceOfProducts = async function() {
   if (!Array.isArray(this.products)) {

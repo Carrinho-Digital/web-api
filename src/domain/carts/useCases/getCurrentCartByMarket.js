@@ -1,5 +1,7 @@
 const { Cart } = require('../models/cart');
-const { NotFound: NotFoundException } = require('../../../exceptions');
+const {
+  NotFound: NotFoundException,
+} = require('../../../exceptions');
 
 function buildGetCurrentCartByMarket({
   getUserById,
@@ -19,6 +21,7 @@ function buildGetCurrentCartByMarket({
     }
 
     const market = await getUserById(marketId);
+
     const cart = await Cart.findOne({
       user: userId,
       market: marketId,
@@ -33,6 +36,18 @@ function buildGetCurrentCartByMarket({
           delivery: 0,
         },
       };
+    }
+
+    const deletedOrInexistent = await cart.hasDeletedOrInexistentProducts();
+
+    if (Array.isArray(deletedOrInexistent) && deletedOrInexistent.length > 0) {
+      const ids = deletedOrInexistent.map(({ _id }) => _id.toString());
+
+      const remainingProducts = cart.products.filter(
+        product => !ids.includes(product._id.toString()));
+
+      cart.products = remainingProducts;
+      await cart.save();
     }
 
     const totalPriceOfProducts = await cart.totalPriceOfProducts();
