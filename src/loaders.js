@@ -57,6 +57,11 @@ function loadSocket(server) {
   function extractClientAuthorization(socket) {
     const headers = socket.handshake.headers;
 
+    logger.info({
+      message: '[SOCKET] Authorization Headers',
+      headers: headers,
+    });
+
     if (!headers || !headers.cookie) {
       return null;
     }
@@ -65,6 +70,12 @@ function loadSocket(server) {
 
     const authorizationCookie = cookies.filter(
       cookie => cookie.toString().startsWith('Authorization'));
+
+    logger.info({
+      message: '[SOCKET] Authorization Cookies',
+      cookies: cookies,
+      authorizationCookie,
+    });
 
     if (authorizationCookie.length < 1) {
       return null;
@@ -76,8 +87,19 @@ function loadSocket(server) {
   }
 
   socketIOServer.use(async function(socket, next) {
+    logger.info({
+      message: '[SOCKET] Authorization',
+      clientId: socket.client.id,
+    });
+
     const authorizationToken = extractClientAuthorization(socket);
     const isUserAuthorized = await authorize(authorizationToken);
+
+    logger.info({
+      message: '[SOCKET] Is User Authorized',
+      isUserAuthorized: isUserAuthorized,
+      authorizationToken: authorizationToken,
+    });
 
     if (!isUserAuthorized) {
       socket.disconnect();
