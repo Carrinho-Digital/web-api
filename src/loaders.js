@@ -56,11 +56,17 @@ function loadSocket(server) {
 
   function extractClientAuthorization(socket) {
     const headers = socket.handshake.headers;
+    const query = socket.handshake.query || {};
 
     logger.info({
       message: '[SOCKET] Authorization Headers',
       headers: headers,
+      query: query,
     });
+
+    if (query.authorization) {
+      return query.authorization;
+    }
 
     if (!headers || !headers.cookie) {
       return null;
