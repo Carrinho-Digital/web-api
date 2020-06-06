@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const {
+  General: GeneralException,
+} = require('../../../exceptions');
+
 const { Product } = require('../../products/models/product');
 
 const cartSchema = new mongoose.Schema({
@@ -65,6 +69,10 @@ cartSchema.methods.totalPriceOfProducts = async function() {
   ) => {
     const product = await Product.findOne({ _id: productId });
 
+    if (!product || (product && product.isDeleted)) {
+      return null;
+    }
+
     return {
       product,
       quantity,
@@ -72,6 +80,12 @@ cartSchema.methods.totalPriceOfProducts = async function() {
   });
 
   const products = await Promise.all(promisseProducts);
+
+  const hasNullProducts = products.some(product => !product);
+
+  if (hasNullProducts) {
+    throw new GeneralException('Some products dont exists anymore', 422);
+  }
 
   const allProductsPrice = products.reduce((prev, {product, quantity}) =>
     prev + ( product.sellPrice * quantity ), 0);
