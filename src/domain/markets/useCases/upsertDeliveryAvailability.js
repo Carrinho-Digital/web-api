@@ -13,8 +13,8 @@ function buildUpsertDeliveryAvailability({
   }
 
   function normalizeAvailability(availability) {
-    const to = moment(availability.to, 'HH:mm:ss').utc();
-    const from = moment(availability.from, 'HH:mm:ss').utc();
+    const to = moment(availability.to, 'HH:mm:ss.Z').utc();
+    const from = moment(availability.from, 'HH:mm:ss.Z').utc();
 
     return {
       to,
