@@ -14,7 +14,7 @@ env:
 
 jobs:
   build-docker-image:
-    name: 'Build Docker Image'
+    name: "Build Docker Image"
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
       - name: Configure GCloud CLI
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          version: '270.0.0'
+          version: "270.0.0"
           service_account_key: ${{ secrets.GCP_BASE64_APP_KEY }}
 
       - name: GCloud auth docker
