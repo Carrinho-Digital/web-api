@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const {
+  General: GeneralException,
+} = require('../../../exceptions');
+
 const { Product } = require('../../products/models/product');
 
 const cartSchema = new mongoose.Schema({
@@ -50,6 +54,31 @@ const cartSchema = new mongoose.Schema({
   toJSON: { virtuals: true },
 });
 
+cartSchema.methods.hasDeletedOrInexistentProducts = async function() {
+  if (!Array.isArray(this.products)) {
+    return [];
+  }
+
+  if (this.products.length < 1) {
+    return [];
+  }
+
+  const deletedOrInexistentPromise = this.products.filter(async (
+    { product: productId } = {},
+  ) => {
+    const product = await Product.findOne({ _id: productId });
+
+    if (!product || (product && product.isDeleted)) {
+      return true;
+    }
+
+    return false;
+  });
+
+  const deletedOrInexistent = await Promise.all(deletedOrInexistentPromise);
+
+  return deletedOrInexistent;
+};
 
 cartSchema.methods.totalPriceOfProducts = async function() {
   if (!Array.isArray(this.products)) {
@@ -65,6 +94,10 @@ cartSchema.methods.totalPriceOfProducts = async function() {
   ) => {
     const product = await Product.findOne({ _id: productId });
 
+    if (!product || (product && product.isDeleted)) {
+      return null;
+    }
+
     return {
       product,
       quantity,
@@ -72,6 +105,12 @@ cartSchema.methods.totalPriceOfProducts = async function() {
   });
 
   const products = await Promise.all(promisseProducts);
+
+  const hasNullProducts = products.some(product => !product);
+
+  if (hasNullProducts) {
+    throw new GeneralException('Some products dont exists anymore', 422);
+  }
 
   const allProductsPrice = products.reduce((prev, {product, quantity}) =>
     prev + ( product.sellPrice * quantity ), 0);
