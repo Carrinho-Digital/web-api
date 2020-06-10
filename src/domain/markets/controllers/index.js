@@ -8,9 +8,10 @@ const getAllMarkets = require('./getAllMarkets');
 const favoriteMarket = require('./favoriteMarket');
 const addDeliveryRule = require('./addDeliveryRule');
 const getDeliveryRules = require('./getDeliveryRules');
+const addPaymentMethod = require('./addPaymentMethod');
 const updateDeliveryRule = require('./updateDeliveryRule');
 const deleteDeliveryRule = require('./deleteDeliveryRule');
-const addPaymentMethod = require('./addPaymentMethod');
+const getDeliveryRuleById = require('./getDeliveryRuleById');
 const deletePaymentMethod = require('./deletePaymentMethod');
 const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
@@ -26,6 +27,13 @@ router.get(
   authentication,
   only('MARKET_USER'),
   getDeliveryRules,
+);
+
+router.get(
+  '/rules/:ruleId',
+  authentication,
+  only('MARKET_USER'),
+  getDeliveryRuleById,
 );
 
 router.get(

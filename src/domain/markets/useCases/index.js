@@ -18,6 +18,7 @@ const buildGetAllMarkets = require('./getAllMarkets');
 const buildFreeDeliveryRule = require('./freeDeliveryRule');
 const buildUpsertDeliveryRule = require('./upsertDeliveryRule');
 const buildGetDeliveryRules = require('./getDeliveryRules');
+const buildGetDeliveryRuleById = require('./getDeliveryRuleById');
 const buildDeleteDeliveryRule = require('./deleteDeliveryRule');
 const buildGetMarketTags = require('./getMarketTags');
 const buildFindMarketAvailability = require('./findMarketAvailability');
@@ -40,7 +41,12 @@ const marketExists = buildMarketExists();
 const favoriteMarket = buildFavoriteMarket({ marketExists });
 const freeDeliveryRule = buildFreeDeliveryRule();
 const upsertDeliveryRule = buildUpsertDeliveryRule();
+
 const getDeliveryRules = buildGetDeliveryRules();
+const getDeliveryRuleById = buildGetDeliveryRuleById({
+  getUserById,
+});
+
 const deleteDeliveryRule = buildDeleteDeliveryRule();
 const getMarketTags = buildGetMarketTags();
 
@@ -78,6 +84,7 @@ module.exports = {
   upsertDeliveryRule,
   deleteDeliveryRule,
   getDeliveryRules,
+  getDeliveryRuleById,
   upsertPaymentMethod,
   getPaymentMethods,
   deletePaymentMethod,
