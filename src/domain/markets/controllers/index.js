@@ -16,16 +16,23 @@ const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
 const getCurrentMarketTags = require('./getCurrentMarketTags');
 const getDeliveryAvailabilities = require('./getDeliveryAvailabilities');
+const getDeliveryAvailabilityById = require('./getDeliveryAvailabilityById');
 const upsertAvailability = require('./upsertDeliveryAvailability');
 const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
 
 const categories = require('./categories');
 
 router.get(
-  '/rules',
+  '/rules/:marketId?',
+  authentication,
+  getDeliveryRules,
+);
+
+router.get(
+  '/availabilities/get/:availabilityId',
   authentication,
   only('MARKET_USER'),
-  getDeliveryRules,
+  getDeliveryAvailabilityById,
 );
 
 router.get(
