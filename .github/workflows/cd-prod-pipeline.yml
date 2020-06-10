@@ -28,6 +28,12 @@ jobs:
         with:
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
+      - name: Replace $(DOCKER_IMAGE)
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "%%prd_docker_image%%"
+          replace: ${{ env.DOCKER_IMAGE }}
+
       - name: Replace $(SALT)
         uses: jacobtomlinson/gha-find-replace@master
         with:
