@@ -32,6 +32,8 @@ const buildUpsertDeliveryAvailability =
   require('./upsertDeliveryAvailability');
 const buildGetDeliveryAvailabilities =
   require('./getDeliveryAvailabilities');
+const buildGetDeliveryAvailabilityById =
+  require('./getDeliveryAvailabilityById');
 const buildDeleteDeliveryAvalability =
   require('./deleteDeliveryAvailability');
 
@@ -62,6 +64,9 @@ const upsertDeliveryAvailability = buildUpsertDeliveryAvailability({
 });
 const getDeliveryAvailabilities = buildGetDeliveryAvailabilities({
   getUserById,
+});
+const getDeliveryAvailabilityById = buildGetDeliveryAvailabilityById({
+  getDeliveryAvailabilities,
 });
 const getPaymentMethods = buildGetPaymentMethods({
   getUserById,
@@ -94,5 +99,6 @@ module.exports = {
   upsertDeliveryAvailability,
   getDeliveryAvailabilities,
   deleteDeliveryAvalability,
+  getDeliveryAvailabilityById,
   marketHasProductsInTheCart,
 };

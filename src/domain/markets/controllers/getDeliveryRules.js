@@ -3,7 +3,18 @@ const {
 } = require('../useCases');
 
 async function getDeliveryRules(request, response) {
-  const marketId = request.user._id;
+  const marketId =
+    request.user.isMarket ? request.user._id : request.params.marketId;
+
+  if (!marketId) {
+    return response.status(400).json({
+      success: false,
+      errors: [
+        'Market id parameter is required',
+      ],
+      message: 'CANNOT_GET_DELIVERY_AVAILABILITIES',
+    });
+  }
 
   try {
     const deliveryRules = await getDeliveryRulesUseCase(marketId);
