@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: prd-carrinhodigital-webapi
-          image: gcr.io/carrinhodigital/webapi:merge
+          image: "%%prd_docker_image%%"
           imagePullPolicy: Always
           resources:
             requests:

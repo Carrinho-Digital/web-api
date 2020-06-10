@@ -18,6 +18,7 @@ const buildGetAllMarkets = require('./getAllMarkets');
 const buildFreeDeliveryRule = require('./freeDeliveryRule');
 const buildUpsertDeliveryRule = require('./upsertDeliveryRule');
 const buildGetDeliveryRules = require('./getDeliveryRules');
+const buildGetDeliveryRuleById = require('./getDeliveryRuleById');
 const buildDeleteDeliveryRule = require('./deleteDeliveryRule');
 const buildGetMarketTags = require('./getMarketTags');
 const buildFindMarketAvailability = require('./findMarketAvailability');
@@ -31,6 +32,8 @@ const buildUpsertDeliveryAvailability =
   require('./upsertDeliveryAvailability');
 const buildGetDeliveryAvailabilities =
   require('./getDeliveryAvailabilities');
+const buildGetDeliveryAvailabilityById =
+  require('./getDeliveryAvailabilityById');
 const buildDeleteDeliveryAvalability =
   require('./deleteDeliveryAvailability');
 
@@ -40,7 +43,12 @@ const marketExists = buildMarketExists();
 const favoriteMarket = buildFavoriteMarket({ marketExists });
 const freeDeliveryRule = buildFreeDeliveryRule();
 const upsertDeliveryRule = buildUpsertDeliveryRule();
+
 const getDeliveryRules = buildGetDeliveryRules();
+const getDeliveryRuleById = buildGetDeliveryRuleById({
+  getUserById,
+});
+
 const deleteDeliveryRule = buildDeleteDeliveryRule();
 const getMarketTags = buildGetMarketTags();
 
@@ -56,6 +64,9 @@ const upsertDeliveryAvailability = buildUpsertDeliveryAvailability({
 });
 const getDeliveryAvailabilities = buildGetDeliveryAvailabilities({
   getUserById,
+});
+const getDeliveryAvailabilityById = buildGetDeliveryAvailabilityById({
+  getDeliveryAvailabilities,
 });
 const getPaymentMethods = buildGetPaymentMethods({
   getUserById,
@@ -78,6 +89,7 @@ module.exports = {
   upsertDeliveryRule,
   deleteDeliveryRule,
   getDeliveryRules,
+  getDeliveryRuleById,
   upsertPaymentMethod,
   getPaymentMethods,
   deletePaymentMethod,
@@ -87,5 +99,6 @@ module.exports = {
   upsertDeliveryAvailability,
   getDeliveryAvailabilities,
   deleteDeliveryAvalability,
+  getDeliveryAvailabilityById,
   marketHasProductsInTheCart,
 };

@@ -8,24 +8,39 @@ const getAllMarkets = require('./getAllMarkets');
 const favoriteMarket = require('./favoriteMarket');
 const addDeliveryRule = require('./addDeliveryRule');
 const getDeliveryRules = require('./getDeliveryRules');
+const addPaymentMethod = require('./addPaymentMethod');
 const updateDeliveryRule = require('./updateDeliveryRule');
 const deleteDeliveryRule = require('./deleteDeliveryRule');
-const addPaymentMethod = require('./addPaymentMethod');
+const getDeliveryRuleById = require('./getDeliveryRuleById');
 const deletePaymentMethod = require('./deletePaymentMethod');
 const updatePaymentMethod = require('./updatePaymentMethod');
 const getPaymentMethods = require('./getPaymentMethods');
 const getCurrentMarketTags = require('./getCurrentMarketTags');
 const getDeliveryAvailabilities = require('./getDeliveryAvailabilities');
+const getDeliveryAvailabilityById = require('./getDeliveryAvailabilityById');
 const upsertAvailability = require('./upsertDeliveryAvailability');
 const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
 
 const categories = require('./categories');
 
 router.get(
-  '/rules',
+  '/rules/:marketId?',
+  authentication,
+  getDeliveryRules,
+);
+
+router.get(
+  '/rules/get/:ruleId',
   authentication,
   only('MARKET_USER'),
-  getDeliveryRules,
+  getDeliveryRuleById,
+);
+
+router.get(
+  '/availabilities/get/:availabilityId',
+  authentication,
+  only('MARKET_USER'),
+  getDeliveryAvailabilityById,
 );
 
 router.get(
