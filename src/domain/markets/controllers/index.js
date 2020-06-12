@@ -20,8 +20,15 @@ const getDeliveryAvailabilities = require('./getDeliveryAvailabilities');
 const getDeliveryAvailabilityById = require('./getDeliveryAvailabilityById');
 const upsertAvailability = require('./upsertDeliveryAvailability');
 const deleteDeliveryAvailability = require('./deleteDeliveryAvailability');
-
+const getSales = require('./getSales.js');
 const categories = require('./categories');
+
+router.get(
+  '/sells',
+  authentication,
+  only('MARKET_USER'),
+  getSales,
+);
 
 router.get(
   '/rules/:marketId?',
