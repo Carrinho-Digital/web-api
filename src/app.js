@@ -1,5 +1,6 @@
 const http = require('http');
 const express = require('express');
+const redisManager = require('./lib/redis');
 
 const {
   loadSocket,
@@ -10,8 +11,11 @@ const {
 const expressApp = express();
 const server = http.Server(expressApp);
 
-loadMiddlewares(expressApp);
-loadRouters(expressApp);
-loadSocket(server);
+const start = () => {
+  loadMiddlewares(expressApp);
+  loadRouters(expressApp);
+  loadSocket(server, redisManager.redisClient());
+};
 
-module.exports = server;
+module.exports.start = start;
+module.exports.server = server;

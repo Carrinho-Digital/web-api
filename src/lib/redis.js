@@ -1,15 +1,20 @@
-const redis = require('redis');
 const { promisify } = require('util');
 
-const redisClient = redis.createClient(process.env.REDIS_SOCKET_CLIENTS_URL);
+let redis = null;
 
-const getAsync = promisify(redisClient.get).bind(redisClient);
-const setAsync = promisify(redisClient.set).bind(redisClient);
-const delAsync = promisify(redisClient.del).bind(redisClient);
-
-module.exports = {
-  get: getAsync,
-  set: setAsync,
-  del: delAsync,
+const setRedis = instance => {
+  redis = instance;
 };
 
+const buildRedis = () => {
+  if (!redis) return {};
+
+  return {
+    get: promisify(redis.get).bind(redis),
+    set: promisify(redis.set).bind(redis),
+    del: promisify(redis.del).bind(redis),
+  };
+};
+
+module.exports.setRedis = setRedis;
+module.exports.redisClient = buildRedis;
