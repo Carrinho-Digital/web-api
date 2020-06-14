@@ -1,12 +1,12 @@
 function getRefSearch(referenceName, query) {
   const queryKeys = Object.keys(query);
 
-  if (queryKeys.length < 1) return null;
+  if (queryKeys.length < 1) return [null, query];
 
   const refSearchKeys = queryKeys.filter(
     key => key.includes(`${referenceName}.`));
 
-  if (refSearchKeys < 1) return null;
+  if (refSearchKeys < 1) return [null, query];
 
   const searchWithoutRefKeys = queryKeys.filter(
     key => !key.includes(`${referenceName}.`));
