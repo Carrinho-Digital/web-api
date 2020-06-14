@@ -31,6 +31,10 @@ function buildDelivery({
 
       const userAddressToDelivery = await getAddressById(addressId, userId);
 
+      if (!userAddressToDelivery) {
+        throw new NotFoundException('User address cannot be found');
+      }
+
       currentCart.delivery = {
         method,
         address: userAddressToDelivery.id,
