@@ -63,19 +63,15 @@ cartSchema.methods.hasDeletedOrInexistentProducts = async function() {
     return [];
   }
 
-  const deletedOrInexistentPromise = this.products.filter(async (
-    { product: productId } = {},
-  ) => {
-    const product = await Product.findOne({ _id: productId });
-
-    if (!product || (product && product.isDeleted)) {
-      return true;
-    }
-
-    return false;
+  const cartProductsPromise = this.products.map(async ({ product }) => {
+    return await Product.findOne({ _id: product });
   });
 
-  const deletedOrInexistent = await Promise.all(deletedOrInexistentPromise);
+  const cartProducts = await Promise.all(cartProductsPromise);
+
+  const deletedOrInexistent = cartProducts.filter(product => {
+    return !product || (product && product.isDeleted);
+  });
 
   return deletedOrInexistent;
 };
