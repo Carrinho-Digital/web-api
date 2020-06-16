@@ -26,7 +26,7 @@ function buildGetCurrentCartByMarket({
       user: userId,
       market: marketId,
       closed: false,
-    });
+    }).populate('user');
 
     if (!cart) {
       return {
