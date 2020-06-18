@@ -1,5 +1,3 @@
-// TODO: implementar o getSaleById
-
 const {
   getSaleById: getSaleByIdUseCase,
 } = require('../useCases');
