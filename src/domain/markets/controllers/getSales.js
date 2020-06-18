@@ -1,7 +1,7 @@
 const { getSearchParams } = require('../../../utils/paginate');
 const {
   getSales: getSalesUseCase,
-} = require('../useCases');
+} = require('../../carts/useCases');
 
 async function getSales(request, response) {
   const marketId = request.user._id;

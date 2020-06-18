@@ -1,11 +1,15 @@
-const { Cart } = require('../../carts/models/cart');
+const { Cart } = require('../models/cart');
 const { Product } = require('../../products/models/product');
 
 const {
   NotFound: NotFoundException,
 } = require('../../../exceptions');
 
-function buildGetSaleById() {
+function buildGetSaleById({
+  getAddressById,
+  deliveryPrice,
+  deliveryDistance,
+}) {
   async function populateSaleProducts(saleProducts) {
     function getProductById(productId) {
       return Product
@@ -31,19 +35,55 @@ function buildGetSaleById() {
       market: marketId,
     };
 
-    const sale = await Cart
+    const saleInstance = await Cart
       .findOne(getSaleByIdQuery)
       .populate('user');
 
+    let sale = saleInstance.toObject();
+
     if (!sale) {
       throw new NotFoundException('Cannot found sale');
+    }
+
+    if (sale.delivery && sale.delivery.method === 'delivery') {
+      const populatedAddress = await getAddressById(
+        sale.delivery.address, sale.user._id);
+
+      const distanceToCustomer = await deliveryDistance(
+        sale.delivery.address,
+        sale.user._id,
+        marketId,
+      );
+
+      const distanceToCustomerInKm = distanceToCustomer / 1000;
+
+      const totalPriceOfDelivery = await deliveryPrice(
+        distanceToCustomerInKm,
+        marketId,
+      );
+
+      sale = {
+        ...sale,
+        delivery: {
+          ...sale.delivery,
+          address: populatedAddress,
+          price: totalPriceOfDelivery,
+        },
+      };
     }
 
     const saleProducts = sale.products || [];
 
     if (saleProducts.length > 0) {
       const salePopulatedProducts = await populateSaleProducts(saleProducts);
-      sale.products = salePopulatedProducts;
+
+      const productsPrice = await saleInstance.totalPriceOfProducts();
+
+      sale = {
+        ...sale,
+        price: productsPrice,
+        products: salePopulatedProducts,
+      };
     }
 
     return sale;

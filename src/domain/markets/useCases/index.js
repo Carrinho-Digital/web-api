@@ -1,7 +1,5 @@
 const {
   paginate,
-  simplePaginate,
-  getRefSearch,
 } = require('../../../utils/paginate');
 
 const {
@@ -41,14 +39,6 @@ const buildGetDeliveryAvailabilityById =
 const buildDeleteDeliveryAvalability =
   require('./deleteDeliveryAvailability');
 
-const buildGetSaleById = require('./getSaleById');
-const buildGetSales = require('./getSales');
-
-const getSales = buildGetSales({
-  simplePaginate,
-  getRefSearch,
-});
-const getSaleById = buildGetSaleById();
 const categories = buildCategories();
 const getAllMarkets = buildGetAllMarkets(paginate);
 const marketExists = buildMarketExists();
@@ -103,7 +93,6 @@ module.exports = {
   getPaymentMethods,
   deletePaymentMethod,
   categories,
-  getSaleById,
   getMarketTags,
   findMarketAvailability,
   upsertDeliveryAvailability,
@@ -111,5 +100,4 @@ module.exports = {
   deleteDeliveryAvalability,
   getDeliveryAvailabilityById,
   marketHasProductsInTheCart,
-  getSales,
 };

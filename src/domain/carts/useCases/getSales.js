@@ -1,4 +1,4 @@
-const { Cart } = require('../../carts/models/cart');
+const { Cart } = require('../models/cart');
 
 function buildGetSales({
   simplePaginate,

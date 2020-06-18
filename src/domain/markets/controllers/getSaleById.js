@@ -1,6 +1,6 @@
 const {
-  getSaleById: getSaleByIdUseCase,
-} = require('../useCases');
+  getSalesById: getSaleByIdUseCase,
+} = require('../../carts/useCases');
 
 async function getSaleById(request, response) {
   const marketId = request.user._id;
