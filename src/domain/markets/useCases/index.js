@@ -40,27 +40,27 @@ const buildGetDeliveryAvailabilityById =
   require('./getDeliveryAvailabilityById');
 const buildDeleteDeliveryAvalability =
   require('./deleteDeliveryAvailability');
+
+const buildGetSaleById = require('./getSaleById');
 const buildGetSales = require('./getSales');
 
 const getSales = buildGetSales({
   simplePaginate,
   getRefSearch,
 });
+const getSaleById = buildGetSaleById();
 const categories = buildCategories();
 const getAllMarkets = buildGetAllMarkets(paginate);
 const marketExists = buildMarketExists();
 const favoriteMarket = buildFavoriteMarket({ marketExists });
 const freeDeliveryRule = buildFreeDeliveryRule();
 const upsertDeliveryRule = buildUpsertDeliveryRule();
-
 const getDeliveryRules = buildGetDeliveryRules();
 const getDeliveryRuleById = buildGetDeliveryRuleById({
   getUserById,
 });
-
 const deleteDeliveryRule = buildDeleteDeliveryRule();
 const getMarketTags = buildGetMarketTags();
-
 const marketHasProductsInTheCart = buildMarketHasProductsInTheCart({
   belowsToMarket,
   productHasQuantity,
@@ -103,6 +103,7 @@ module.exports = {
   getPaymentMethods,
   deletePaymentMethod,
   categories,
+  getSaleById,
   getMarketTags,
   findMarketAvailability,
   upsertDeliveryAvailability,

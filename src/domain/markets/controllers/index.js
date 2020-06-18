@@ -4,6 +4,7 @@ const {
   only,
 } = require('../../../middleware');
 
+const getSaleById = require('./getSaleById');
 const getAllMarkets = require('./getAllMarkets');
 const favoriteMarket = require('./favoriteMarket');
 const addDeliveryRule = require('./addDeliveryRule');
@@ -24,10 +25,17 @@ const getSales = require('./getSales.js');
 const categories = require('./categories');
 
 router.get(
-  '/sells',
+  '/sales',
   authentication,
   only('MARKET_USER'),
   getSales,
+);
+
+router.get(
+  '/sales/:saleId',
+  authentication,
+  only('MARKET_USER'),
+  getSaleById,
 );
 
 router.get(
