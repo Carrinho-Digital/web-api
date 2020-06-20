@@ -1,5 +1,9 @@
 const events = require('../../../events');
-const { paginate } = require('../../../utils/paginate');
+const {
+  paginate,
+  getRefSearch,
+  simplePaginate,
+} = require('../../../utils/paginate');
 
 const {
   getUserById,
@@ -20,6 +24,8 @@ const {
 
 const buildDelivery = require('./delivery');
 const buildCheckout = require('./checkout');
+const buildGetSales = require('./getSales');
+const buildGetSalesById = require('./getSaleById');
 const buildCartsHistory = require('./cartsHistory');
 const buildAvailability = require('./availability');
 const buildDeliveryPrice = require('./deliveryPrice');
@@ -69,13 +75,27 @@ const savePaymentOnCart = buildSavePaymentOnCart({
 const cartsHitory = buildCartsHistory({
   paginate,
 });
+const getSales = buildGetSales({
+  getRefSearch,
+  simplePaginate,
+});
+const getSalesById = buildGetSalesById({
+  getAddressById,
+  deliveryDistance,
+  deliveryPrice,
+});
+
 
 module.exports = {
   delivery,
   checkout,
   cartsHitory,
   availability,
+  getSales,
+  getSalesById,
   savePaymentOnCart,
   getCurrentCartByMarket,
   addProductsOnMarketCart,
+  deliveryDistance,
+  deliveryPrice,
 };

@@ -125,8 +125,8 @@ function buildCheckout({
 
     await Promise.all(updateProductStockPromisse);
 
-    await currentCart.closeCart();
-    await currentCart.save();
+    // await currentCart.closeCart();
+    // await currentCart.save();
 
     events.fire(events.getEvents.CHECKOUT_MADE, currentCart);
 

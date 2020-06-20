@@ -42,6 +42,14 @@ const cartSchema = new mongoose.Schema({
     from: Date,
     to: Date,
   },
+  wasAccepted: {
+    type: Boolean,
+    default: false,
+  },
+  wasRejected: {
+    type: Boolean,
+    default: false,
+  },
   payment: {
     method: {
       type: String,
