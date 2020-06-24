@@ -1,9 +1,14 @@
 const events = require('../../../events');
+
 const {
   paginate,
   getRefSearch,
   simplePaginate,
 } = require('../../../utils/paginate');
+
+const {
+  findCurrentPromotionByProduct,
+} = require('../../promotions/useCases');
 
 const {
   getUserById,
@@ -83,6 +88,7 @@ const getSalesById = buildGetSalesById({
   getAddressById,
   deliveryDistance,
   deliveryPrice,
+  findCurrentPromotionByProduct,
 });
 
 
