@@ -7,4 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 - Documentação da versão com o changelog
-- Adicionado as promoções ao endpoint de **getSalesById**
+- Adicionado as promoções ao endpoint de getSalesById
