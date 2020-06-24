@@ -5,7 +5,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 
-const redis = require('./lib/redis');
 const logger = require('./lib/logger');
 const apiRouters = require('./routers');
 const appSocket = require('./lib/socket');
@@ -51,7 +50,7 @@ function loadRouters(app) {
   });
 }
 
-function loadSocket(server) {
+function loadSocket(server, redis) {
   const socketIOServer = io(server);
 
   function extractClientAuthorization(socket) {

@@ -1,10 +1,23 @@
 const supertest = require('supertest');
 const inmemorydb = require('./inmemorydb');
+
 const app = require('../../app');
+const redisManager = require('../../lib/redis');
 
-const server = supertest(app);
+const redisMockup = {
+  get: jest.fn(),
+  set: jest.fn(),
+  del: jest.fn(),
+};
 
-beforeAll(async () => await inmemorydb.connect());
+redisManager.setRedis(redisMockup);
+app.start();
+
+const server = supertest(app.server);
+
+beforeAll(async () => {
+  await inmemorydb.connect();
+});
 
 afterAll(async () => await inmemorydb.close());
 

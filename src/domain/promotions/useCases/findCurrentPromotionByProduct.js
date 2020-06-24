@@ -1,8 +1,10 @@
 const { Promotion } = require('../models/promotion');
 
 function buildFindCurrentPromotionByProduct() {
-  return async function findCurrentPromotionByProduct(product, marketId) {
-    const currentDate = new Date();
+  return async function findCurrentPromotionByProduct(
+    product, marketId, searchDate = new Date(),
+  ) {
+    const currentDate = searchDate;
 
     const defaultQuery = {
       $or: [

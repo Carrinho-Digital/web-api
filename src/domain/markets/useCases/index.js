@@ -1,4 +1,6 @@
-const { paginate } = require('../../../utils/paginate');
+const {
+  paginate,
+} = require('../../../utils/paginate');
 
 const {
   getUserById,
@@ -43,15 +45,12 @@ const marketExists = buildMarketExists();
 const favoriteMarket = buildFavoriteMarket({ marketExists });
 const freeDeliveryRule = buildFreeDeliveryRule();
 const upsertDeliveryRule = buildUpsertDeliveryRule();
-
 const getDeliveryRules = buildGetDeliveryRules();
 const getDeliveryRuleById = buildGetDeliveryRuleById({
   getUserById,
 });
-
 const deleteDeliveryRule = buildDeleteDeliveryRule();
 const getMarketTags = buildGetMarketTags();
-
 const marketHasProductsInTheCart = buildMarketHasProductsInTheCart({
   belowsToMarket,
   productHasQuantity,

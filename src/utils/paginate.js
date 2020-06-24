@@ -1,7 +1,44 @@
+function getRefSearch(referenceName, query) {
+  const queryKeys = Object.keys(query);
+
+  if (queryKeys.length < 1) return [null, query];
+
+  const refSearchKeys = queryKeys.filter(
+    key => key.includes(`${referenceName}.`));
+
+  if (refSearchKeys < 1) return [null, query];
+
+  const searchWithoutRefKeys = queryKeys.filter(
+    key => !key.includes(`${referenceName}.`));
+
+  const withoutRef = searchWithoutRefKeys.reduce((prev, key) => {
+    const valueOnQuery = query[key];
+    return {...prev, [key]: valueOnQuery};
+  }, {});
+
+  const refSearch = refSearchKeys.reduce((prev, refKey) => {
+    const valueOnQuery = query[refKey];
+    const [, field] = refKey.split('.');
+
+    return {...prev, [field]: valueOnQuery};
+  }, {});
+
+  return [refSearch, withoutRef];
+}
+
 async function paginate(
-  items = [], searchParams = { limit: 5, page: 0, query: {} }, Model) {
+  items = [], searchParams = { limit: 10, page: 0, query: {} }, Model) {
   const count = await Model.count(searchParams.query);
 
+  return {
+    data: items,
+    itemsPerPage: items.length,
+    currentPage: searchParams.page,
+    totalPages: Math.ceil(count / searchParams.limit),
+  };
+}
+
+function simplePaginate(items, count, searchParams = { limit: 10, page: 0 }) {
   return {
     data: items,
     itemsPerPage: items.length,
@@ -98,5 +135,7 @@ function getSearchParams(request) {
   };
 }
 
+module.exports.getRefSearch = getRefSearch;
+module.exports.simplePaginate = simplePaginate;
 module.exports.paginate = paginate;
 module.exports.getSearchParams = getSearchParams;

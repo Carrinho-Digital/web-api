@@ -53,6 +53,7 @@ function buildAddProductsOnMarketCart({
         currentUserCartOnMarket,
         productsInfo,
       );
+
       return productsAdded;
     } catch (exception) {
       throw new GeneralException('Problems to add products on cart', 500);
