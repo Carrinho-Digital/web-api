@@ -37,7 +37,7 @@ function buildGetSaleById({
 
     const saleInstance = await Cart
       .findOne(getSaleByIdQuery)
-      .populate('user');
+      .populate('user', '-password');
 
     let sale = saleInstance.toObject();
 
