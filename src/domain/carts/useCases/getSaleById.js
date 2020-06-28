@@ -49,6 +49,34 @@ function buildGetSaleById({
     return Promise.all(productsWithPromotion);
   }
 
+  function calculeTotalPromotions(totalPrice = 0, products = []) {
+    if (products.length < 1) return [0, 0];
+
+    const promotions = products.reduce((aggr, { promotion, quantity }) => {
+      if (!promotion || Object.keys(promotion).length < 1) {
+        return aggr + 0;
+      }
+
+      if (promotion.discountInPercent) {
+        const discountInPercent = Number(promotion.discountInPercent);
+        const percentToValue = Number(totalPrice) * (discountInPercent / 100);
+
+        return aggr + percentToValue;
+      }
+
+      if (promotion.discountInPrice) {
+        return aggr + (Number(promotion.discountInPrice) * quantity);
+      }
+
+      return aggr + 0;
+    }, 0);
+
+
+    const priceAfterPromotions = totalPrice - promotions;
+
+    return [promotions, priceAfterPromotions];
+  }
+
   return async function getSaleById(saleId, marketId) {
     const getSaleByIdQuery = {
       _id: saleId,
@@ -106,10 +134,16 @@ function buildGetSaleById({
         salePopulatedProducts, sale);
 
       const productsPrice = await saleInstance.totalPriceOfProducts();
+      const [totalPromotions, priceAfterPromotions] = calculeTotalPromotions(
+        productsPrice, saleProductsWithPromotion);
 
       sale = {
         ...sale,
         price: productsPrice,
+        promotions: {
+          totalPromotions: totalPromotions,
+          totalPriceAfterPromotions: priceAfterPromotions,
+        },
         products: saleProductsWithPromotion,
       };
     }
